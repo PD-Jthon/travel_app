@@ -48,6 +48,7 @@ export default function BasicModal({
       data: rawReservation,
     })
       .then((res) => {
+        console.log('51', res.data);
         ModalToggler(false);
         setAlert({
           severity: "success",
@@ -111,7 +112,7 @@ export default function BasicModal({
                   variant="contained"
                   color="error"
                   onClick={() => {
-                    ModalToggler();
+                    ModalToggler(false);
                     setSubmit(false);
                   }}
                 >

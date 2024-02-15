@@ -14,6 +14,7 @@ import {
 import { handleBreakpoints } from "@mui/system";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
+import "dayjs/locale/ja";
 
 const WrappedSingleInputDateRangeField = React.forwardRef((props, ref) => {
   // useEffect(() => {
@@ -46,10 +47,10 @@ export default function WrappedSingleInputDateRangePicker(props) {
   }, []);
 
   console.log(checkInOutValue);
-  console.log(temp);
+  // console.log(temp);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"ja"}>
       <DemoContainer components={["SingleInputDateRangeField"]}>
         <DateRangePicker
           defaultValue={checkInOutValue ? checkInOutValue : temp}

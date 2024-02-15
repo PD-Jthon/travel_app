@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import {
+  Alert,
   ButtonGroup,
   TableBody,
   TableContainer,
@@ -16,7 +17,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -29,9 +30,12 @@ import Grid from "@mui/material/Grid";
 import CheckInOut from "../Calendar/CheckInOut";
 import dayjs from "dayjs";
 import { constSelector } from "recoil";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import { Checklist, LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import GetUserInfo from "../AuthTemplates/GetUserInfo";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
+import { useAlert } from "../Alert/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import CancelModal from "./CancelModal";
 
 const columns = [
   { id: "created_at", label: "作成日" },
@@ -59,9 +63,21 @@ const style = {
   p: 4,
 };
 
+function ConvertDate(date) {
+  let temp1 = date.replace("年", "-");
+  let temp2 = temp1.replace("月", "-");
+  let temp3 = temp2.replace("日", "");
+  return temp3;
+}
+
 // 予約変更用の入力フォームを表示するためのモーダル
-function ChildModal({ handleChildModal, childModal, modalElem }) {
-  const [open, setOpen] = React.useState(false);
+function ChildModal({
+  handleChildModal,
+  childModal,
+  modalElem,
+  setReservation,
+  setOpen,
+}) {
   const handleOpen = () => {
     setOpen(true);
   };
@@ -72,6 +88,8 @@ function ChildModal({ handleChildModal, childModal, modalElem }) {
   const [capacity, setCapacity] = useState();
   const [num, setNum] = useState();
   const { user, setUser } = useUserState();
+  const { alert, setAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleCheckInOutChange = (value) => {
     setCheckInOutValue(value);
@@ -80,9 +98,8 @@ function ChildModal({ handleChildModal, childModal, modalElem }) {
   // console.log(checkInOutValue);
 
   useEffect(() => {
-    console.log("setDate");
-    const checkIn = dayjs(modalElem.check_in);
-    const checkOut = dayjs(modalElem.check_out);
+    const checkIn = dayjs(ConvertDate(modalElem.check_in));
+    const checkOut = dayjs(ConvertDate(modalElem.check_out));
     setNum(modalElem.num_people);
 
     handleCheckInOutChange([checkIn, checkOut]);
@@ -101,6 +118,71 @@ function ChildModal({ handleChildModal, childModal, modalElem }) {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const dateFormatter = (date) => {
+    console.log(date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const convertedDate = `${year}-${month}-${day}`;
+    return convertedDate;
+  };
+
+  console.log(user);
+
+  const handleSubmit = () => {
+    console.log(checkInOutValue[0]["$d"]);
+    const checkIn = dateFormatter(checkInOutValue[0]["$d"]);
+    const checkOut = dateFormatter(checkInOutValue[1]["$d"]);
+    const id = modalElem.id;
+    axios({
+      url: `http://localhost:8000/top/change-reservation/${id}`,
+      method: "POST",
+      data: {
+        num_people: num,
+        check_in: checkIn,
+        check_out: checkOut,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setAlert({
+          severity: "success",
+          message: "予約を更新しました。",
+        });
+        handleChildModal();
+        setOpen((prev) => !prev);
+
+        const id = JSON.parse(user).pk;
+        axios({
+          url: `http://localhost:8000/top/get-reservation/${id}`,
+          method: "GET",
+        })
+          .then((res) => {
+            setReservation(res.data);
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => {
+        console.log(error);
+        setAlert({
+          severity: "error",
+          message: "予約の更新に失敗しました。",
+        });
+        handleChildModal();
+        setOpen((prev) => !prev);
+      });
+  };
+
+  const handleChangeNum = (e) => {
+    console.log(e.target.value);
+    const tempNum = Number(e.target.value);
+    setNum(tempNum);
+  };
+
+  const handleChangeDate = (e, date) => {
+    console.log("handleChangeDate", e, date);
+  };
 
   return (
     <React.Fragment>
@@ -152,16 +234,16 @@ function ChildModal({ handleChildModal, childModal, modalElem }) {
                     inputProps: { min: 1, max: capacity },
                   }}
                   // value={numberOfPeople}
-                  // onChange={(e) => handleTextFieldChange(e)}
+                  onChange={(e) => handleChangeNum(e)}
                 />
               </Grid>
               <Grid xs={12} justifyContent="center" display="flex">
                 <Button
                   variant="contained"
                   sx={{ width: "100%" }}
-                  // onClick={handleSubmit(handleReservation)}
+                  onClick={() => handleSubmit()}
                 >
-                  予約する
+                  決定
                 </Button>
               </Grid>
             </Grid>
@@ -183,6 +265,7 @@ export default function Reservation() {
   const handleClose = () => setOpen(false);
   const [modalElem, setModalElem] = useState();
   const [childModal, setChildModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
   const [id, setID] = useState(0);
 
   // const handleChangePage = (event, newPage) => {
@@ -202,6 +285,10 @@ export default function Reservation() {
   // 子モーダルの開閉
   const handleChildModal = () => {
     setChildModal((prev) => !prev);
+  };
+
+  const handleCancelModal = () => {
+    setCancelModal((prev) => !prev);
   };
 
   useEffect(() => {
@@ -244,9 +331,9 @@ export default function Reservation() {
       };
     } else {
       const getReservation = () => {
-        const data = JSON.parse(GetCookieValue('user_info'))
+        const data = JSON.parse(GetCookieValue("user_info"));
         console.log(data);
-        const id = data['pk']
+        const id = data["pk"];
         axios({
           url: `http://localhost:8000/top/get-reservation/${id}`,
           method: "GET",
@@ -405,10 +492,9 @@ export default function Reservation() {
                     <Button
                       variant="contained"
                       color="error"
-                      // onClick={() => {
-                      //   ModalToggler();
-                      //   setSubmit(false);
-                      // }}
+                      onClick={() => {
+                        handleCancelModal();
+                      }}
                     >
                       キャンセル
                     </Button>
@@ -425,6 +511,16 @@ export default function Reservation() {
                   handleChildModal={handleChildModal}
                   childModal={childModal}
                   modalElem={modalElem}
+                  setReservation={setReservation}
+                  setOpen={setOpen}
+                />
+                <CancelModal
+                  handleCancelModal={handleCancelModal}
+                  cancelModal={cancelModal}
+                  reservation={reservation}
+                  modalElem={modalElem}
+                  setOpen={setOpen}
+                  setReservation={setReservation}
                 />
               </Box>
             </Fade>

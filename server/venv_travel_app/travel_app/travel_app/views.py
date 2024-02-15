@@ -8,6 +8,7 @@ from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.settings import api_settings
 from collections import OrderedDict
+import re
 
 
 class TopPagePagination(PageNumberPagination):
@@ -15,7 +16,7 @@ class TopPagePagination(PageNumberPagination):
 
 
 class SearchPagePagination(PageNumberPagination):
-  page_size = 1
+  page_size = 10
 
   def get_paginated_response(self, data):
     return (
@@ -47,13 +48,26 @@ class DetailView(APIView):
 
 # 都道府県で検索をかけた場合の動作
 class SearchHotelView(APIView):
+  pagination_class = SearchPagePagination
+  paginator = pagination_class()
+
   def get(self, request, pref, *args, **kwargs):
     print(pref)
     pref = pref.strip()
     hotel = Hotel.objects.filter(address__contains=pref)
-    serializer = HotelSerializer(hotel, many=True)
-    print(serializer.data)
-    return Response(serializer.data)
+    page = self.paginator.paginate_queryset(hotel, request, view=self)
+    serializer = HotelSerializer(page, many=True)
+    response_data = {
+        'page_status': {
+            "current": self.paginator.page.number,
+            "final": self.paginator.page.paginator.num_pages,
+            "count": self.paginator.page.paginator.count,
+            "next": self.paginator.get_next_link(),
+            "previous": self.paginator.get_previous_link(),
+        },
+        'results': serializer.data,
+    }
+    return Response(response_data)
 
 
 # 検索ボックスで検索した際に動作
@@ -88,7 +102,8 @@ class SearchView(APIView):
       }
       return Response(response_data)
     else:
-      convert_word = list(word.split('\u3000'))
+      convert_word = list(re.split(r'\s+', word))
+      print(convert_word)
       for word in convert_word:
         if word == '':
           convert_word.remove(word)
@@ -103,9 +118,23 @@ class SearchView(APIView):
 
       # QuerySet を使って一度にデータベース検索を行います
       hotel = Hotel.objects.filter(query)
+      page = self.paginator.paginate_queryset(hotel, request, view=self)
+      page_status = self.paginator.get_paginated_response(page)
 
-      serializer = HotelSerializer(hotel, many=True)
-      return Response(serializer.data)
+      serializer = HotelSerializer(page, many=True)
+
+      response_data = {
+          'page_status': {
+              "current": self.paginator.page.number,
+              "final": self.paginator.page.paginator.num_pages,
+              "count": self.paginator.page.paginator.count,
+              "next": self.paginator.get_next_link(),
+              "previous": self.paginator.get_previous_link(),
+          },
+          'results': serializer.data,
+      }
+
+      return Response(response_data)
 
 
 # 予約を作成してDBに登録する
@@ -134,19 +163,37 @@ class GetReservationView(APIView):
 class GetConfirmReservation(APIView):
   def post(self, request, *args, **kwargs):
     data = request.data
+    print(data)
     serializer = ReservationSerializer(data=data)
     if serializer.is_valid():
+      print(serializer.data)
       return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # max_priceに１泊の値段をセットしておいたのでそこでフィルターすれば良い
 class PriceSearchView(APIView):
+  pagination_class = SearchPagePagination
+  paginator = pagination_class()
+
   def get(self, request, price, *args, **kwargs):
     data = Hotel.objects.filter(max_price__lte=price)
-    serializer = HotelSerializer(data, many=True)
-    # print(serializer.data)
-    return Response(serializer.data)
+    page = self.paginator.paginate_queryset(data, request, view=self)
+
+    serializer = HotelSerializer(page, many=True)
+
+    response_data = {
+        'page_status': {
+            "current": self.paginator.page.number,
+            "final": self.paginator.page.paginator.num_pages,
+            "count": self.paginator.page.paginator.count,
+            "next": self.paginator.get_next_link(),
+            "previous": self.paginator.get_previous_link(),
+        },
+        'results': serializer.data,
+    }
+
+    return Response(response_data)
 
 
 class GetHotelInfoView(APIView):
@@ -154,3 +201,24 @@ class GetHotelInfoView(APIView):
     data = Hotel.objects.filter(name=name)
     serializer = HotelSerializer(data, many=True)
     return Response(serializer.data)
+
+
+class ChangeReservationView(APIView):
+  def post(self, request, pk, *args, **kwargs):
+    instance = get_object_or_404(Reservation, pk=pk)
+    data = request.data
+    print(data)
+    serializer = ReservationSerializer(instance=instance, data=data, partial=True)
+    print(serializer)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+
+
+class DeleteReservationView(APIView):
+  def get(self, request, pk, *args, **kwargs):
+    instance = get_object_or_404(Reservation, pk=pk)
+    if instance:
+      instance.delete()
+      return Response(True, status=status.HTTP_200_OK)
+    return Response(False, status=status.HTTP_400_BAD_REQUEST)

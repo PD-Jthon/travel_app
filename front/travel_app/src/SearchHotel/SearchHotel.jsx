@@ -26,6 +26,7 @@ import {
   Grid,
   InputBase,
   ListSubheader,
+  paginationItemClasses,
   Paper,
   TextField,
 } from "@mui/material";
@@ -43,6 +44,9 @@ import { SearchAtom } from "../Atom/SearchResultAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SearchQuery } from "../Atom/SeachQuery";
 import GetCookieValue from "../GetCookie.jsx/GetCookie.jsx";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import BasicPagination from "./Pagination";
 
 // import UnstyledInputIntroduction from "../Calendar/Input";
 
@@ -155,6 +159,7 @@ export default function SearchHotel() {
   const [numOfQuery, setNumOfQuery] = useState(); // クエリの数を表示するために使用するステート
   const [priceValue, setPriceValue] = useState();
   const [rawPrice, setRawPrice] = useState();
+  const [pagination, setPagination] = useState();
 
   // 検索結果があるかどうかを確認するためにsessionに検索結果を保持している
   const session = JSON.parse(sessionStorage.getItem("searchResult"));
@@ -167,8 +172,17 @@ export default function SearchHotel() {
         method: "GET",
       })
         .then((res) => {
-          setQuery(res.data);
-          setSearch();
+          setQuery(res.data.results);
+          setPagination(res.data.page_status);
+          sessionStorage.setItem("searchWord", JSON.stringify(search));
+          sessionStorage.setItem(
+            "searchResult",
+            JSON.stringify(res.data.results)
+          );
+          sessionStorage.setItem(
+            "pagination",
+            JSON.stringify(res.data.page_status)
+          );
         })
         .catch((error) => console.log(error));
     }
@@ -178,8 +192,16 @@ export default function SearchHotel() {
   // 詳細画面から帰ってきたとき検索していたレコードを復元するための処理
   useEffect(() => {
     const searchItem = JSON.parse(sessionStorage.getItem("searchResult"));
+    let searchWord = sessionStorage.getItem("searchWord");
+    const sessionPagination = JSON.parse(sessionStorage.getItem("pagination"));
+    console.log("searchItem", searchItem);
+    // if (searchWord === "undefined") {
+    //   searchWord = undefined;
+    // }
     if (searchItem) {
       setQuery(searchItem);
+      setPagination(sessionPagination);
+      setWord(searchWord);
     }
   }, []);
 
@@ -194,9 +216,20 @@ export default function SearchHotel() {
         method: "GET",
       })
         .then((res) => {
-          console.log(res)
-          setQuery(res.data);
-          setNumOfQuery(res.data.length);
+          // console.log(res.data.results);
+          setQuery(res.data.results);
+          setPagination(res.data.page_status);
+          console.log("page", res.data.page_status);
+          setNumOfQuery(res.data.page_status.count);
+          sessionStorage.setItem(
+            "searchResult",
+            JSON.stringify(res.data.results)
+          );
+          sessionStorage.setItem("searchWord", JSON.stringify(search));
+          sessionStorage.setItem(
+            "pagination",
+            JSON.stringify(res.data.page_status)
+          );
         })
         .catch((error) => console.log(error));
     }
@@ -217,9 +250,17 @@ export default function SearchHotel() {
     })
       .then((res) => {
         // navigate(`/top/search-word/${value}`)
-        setQuery(res.data);
-        setNumOfQuery(res.data.length);
-        sessionStorage.setItem("searchResult", JSON.stringify(res.data));
+        setQuery(res.data.results);
+        setPagination(res.data.page_status);
+        setNumOfQuery(res.data.page_status.count);
+        sessionStorage.setItem(
+          "searchResult",
+          JSON.stringify(res.data.results)
+        );
+        sessionStorage.setItem(
+          "pagination",
+          JSON.stringify(res.data.page_status)
+        );
       })
       .catch((error) => console.log(error));
   };
@@ -256,6 +297,7 @@ export default function SearchHotel() {
     const price = priceOption[e.target.value];
     setRawPrice(price);
     setPriceValue(e.target.value);
+    sessionStorage.setItem("price", price);
   };
 
   const handlePriceSearch = () => {
@@ -264,9 +306,17 @@ export default function SearchHotel() {
       method: "GET",
     })
       .then((res) => {
-        setQuery(res.data);
-        setNumOfQuery(res.data.length);
-        sessionStorage.setItem("searchResult", JSON.stringify(res.data));
+        setQuery(res.data.results);
+        setNumOfQuery(res.data.results.length);
+        sessionStorage.setItem(
+          "searchResult",
+          JSON.stringify(res.data.results)
+        );
+        setPagination(res.data.page_status);
+        sessionStorage.setItem(
+          "pagination",
+          JSON.stringify(res.data.page_status)
+        );
       })
       .catch((error) => console.log(error));
   };
@@ -277,9 +327,17 @@ export default function SearchHotel() {
       method: "GET",
     })
       .then((res) => {
-        setQuery(res.data);
-        setNumOfQuery(res.data.length);
-        sessionStorage.setItem("searchResult", JSON.stringify(res.data));
+        setQuery(res.data.results);
+        setNumOfQuery(res.data.page_status.count);
+        sessionStorage.setItem(
+          "searchResult",
+          JSON.stringify(res.data.results)
+        );
+        setPagination(res.data.page_status);
+        sessionStorage.setItem(
+          "pagination",
+          JSON.stringify(res.data.page_status)
+        );
       })
       .catch((error) => console.log(error));
   };
@@ -291,6 +349,31 @@ export default function SearchHotel() {
       setPrefValue(pref);
     }
   }, []);
+
+  // const handleNext = () => {
+  //   console.log(pagination);
+  //   axios({
+  //     url: pagination.next,
+  //     method: "GET",
+  //   })
+  //     .then((res) => {
+  //       setQuery(res.data.results);
+  //       setPagination(res.data.page_status);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+
+  // const handleBefore = () => {
+  //   axios({
+  //     url: pagination.previous,
+  //     method: "GET",
+  //   })
+  //     .then((res) => {
+  //       setQuery(res.data.results);
+  //       setPagination(res.data.page_status);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   return (
     <>
@@ -341,7 +424,7 @@ export default function SearchHotel() {
             </Grid>
           </Grid>
           <Grid item md={8} xs={12} sx={{ marginBottom: 2 }}>
-            検索結果 : {numOfQuery}件 (ページ)
+            検索結果 : {numOfQuery ? numOfQuery : 0}件
           </Grid>
         </Grid>
         {/* <div style={{display: 'flex', justifyContent: 'center', padding: 50, marginTop: 100}}> */}
@@ -562,7 +645,18 @@ export default function SearchHotel() {
             ))}
           </Grid>
         </Grid>
+        {/* <button onClick={() => handleBefore()}>prev</button>
+        <button onClick={() => handleNext()}>next</button> */}
+      </Container>
+
+      <Container style={{ display: "flex", justifyContent: "center", marginTop: 100, marginBottom: 50 }} >
+        <BasicPagination
+          setPagination={setPagination}
+          pagination={pagination}
+        />
       </Container>
     </>
   );
 }
+
+// "start": "react-scripts start",

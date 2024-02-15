@@ -45,9 +45,7 @@ export default function Top() {
     }
   }, []);
 
-  useEffect(() => {});
-
-  console.log(sessionStorage.getItem("searchResult", "searchWord"));
+  // console.log(sessionStorage.getItem("searchResult", "searchWord"));
 
   return (
     <>

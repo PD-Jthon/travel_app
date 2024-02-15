@@ -1,2 +1,6 @@
 *.pyc
-node_modules/
+server/venv_travel_app/bin
+server/venv_travel_app/include
+server/venv_travel_app/lib
+
+front/travel_app/node_modules

@@ -62,18 +62,6 @@ export default function PlanCarousel() {
               <CardMedia
                 component="img"
                 height="140"
-                image="../../hotel_photos/house01.jpg"
-                alt="green iguana"
-              />
-            </CardActionArea>
-          </Card>
-        </SwiperSlide>
-        <SwiperSlide>
-          <Card sx={{ maxWidth: 400 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
                 image="../../hotel_photos/house02.jpg"
                 alt="green iguana"
               />
@@ -101,6 +89,18 @@ export default function PlanCarousel() {
                 image="../../hotel_photos/house04.jpg"
                 alt="green iguana"
               />
+            </CardActionArea>
+          </Card>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Card sx={{ maxWidth: 400 }}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="140"
+                image="../../hotel_photos/house05.jpg"
+                alt="green iguana"
+              />
               {/* <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 Lizard
@@ -119,7 +119,7 @@ export default function PlanCarousel() {
               <CardMedia
                 component="img"
                 height="140"
-                image="../../hotel_photos/house05.jpg"
+                image="../../hotel_photos/house06.jpg"
                 alt="green iguana"
               />
               {/* <CardContent>

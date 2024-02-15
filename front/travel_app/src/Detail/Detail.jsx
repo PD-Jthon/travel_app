@@ -21,13 +21,14 @@ import { Button, TextField } from "@mui/material";
 import { useRecoilState, useRecoilStateLoadable } from "recoil";
 import { LoggedInState } from "../Atom/atom";
 import Calendar from "../Calendar/Calendar";
-import CheckInOut from '../Calendar/CheckInOut';
+import CheckInOut from "../Calendar/CheckInOut";
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { useUserState } from "../Atom/user";
 import BasicModal from "./ConfirmResevation";
 import Modal from "../Modal/Modal";
 import { set } from "react-hook-form";
 import { useForm, SubmitHandler } from "react-hook-form";
+import moment from "moment";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -93,6 +94,15 @@ const ReservationForm = ({
     mode: "onBlur",
   });
 
+  const ConvertDate = (date) => {
+    console.log(date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const convertedDate = `${year}-${month}-${day}`;
+    return convertedDate;
+  };
+
   // 予約確認モーダル開閉用のステート
   // todo: モーダルにpropsで渡して開閉させるためのハンドラーを作成する必要がある
 
@@ -114,15 +124,21 @@ const ReservationForm = ({
     console.log("Number of People:", numberOfPeople);
     console.log("Check In/Out Value:", checkInOutValue);
     console.log(checkInOutValue[0], checkInOutValue[1]);
-    console.log(user);
+    console.log("user", user);
+
+    const checkIn = ConvertDate(checkInOutValue[0]["$d"]);
+    const checkOut = ConvertDate(checkInOutValue[1]["$d"]);
 
     handleSetRawReservation({
-      user: user["pk"],
+      user: JSON.parse(user).pk,
       hotel: pk,
       num_people: numberOfPeople,
-      check_in: checkInOutValue[0].toISOString().split("T")[0],
-      check_out: checkInOutValue[1].toISOString().split("T")[0],
+      check_in: checkIn,
+      check_out: checkOut,
     });
+
+    const jstOffset = 9 * 60 * 60 * 1000; // 日本時間のオフセット（9時間）
+    console.log("checkInOutValue", checkInOutValue);
 
     axios({
       url: "http://localhost:8000/top/confirm-reservation/",
@@ -131,11 +147,11 @@ const ReservationForm = ({
         "Content-Type": "application/json",
       },
       data: {
-        user: user["pk"],
+        user: JSON.parse(user).pk,
         hotel: pk,
         num_people: numberOfPeople,
-        check_in: checkInOutValue[0].toISOString().split("T")[0],
-        check_out: checkInOutValue[1].toISOString().split("T")[0],
+        check_in: checkIn,
+        check_out: checkOut,
       },
     })
       .then((res) => {
