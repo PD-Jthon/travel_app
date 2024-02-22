@@ -1,0 +1,14 @@
+server {
+        listen 80;
+        listen [::]:80;
+ 
+        server_name 23.20.99.37 ;
+ 
+        root /home/ubuntu/travel_app/front/travel_app/build;
+        index index.html index.htm index.nginx-debian.html;
+ 
+        location /{
+                include proxy_params;
+                proxy_pass http://unix:/home/ubuntu/travel_app/server/venv_travel_app/travel_app/config.sock;
+        }
+}
