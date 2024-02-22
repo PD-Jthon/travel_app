@@ -82,6 +82,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (  # これ
     'http://localhost:3000',
+    'http://23.20.99.37',
 )
 
 CORS_ALLOW_CREDENTIALS = True
@@ -158,7 +159,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_ON_GET = True
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://23.20.99.37"]
 
 REST_AUTH_SERIALIZERS = {
     # 'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
