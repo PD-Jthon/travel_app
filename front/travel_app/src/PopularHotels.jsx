@@ -16,7 +16,7 @@ export default function PopularHotels() {
   useEffect(() => {
     const getPopHotels = () => {
       axios({
-        url: "http://localhost:8000/top",
+        url: `{process.env.REACT_APP_BASE_URL}/top`,
         method: "GET",
       })
         .then((res) => setHotel(res.data))
