@@ -60,15 +60,15 @@ export default function PopularHotels() {
                   style={{ textDecoration: "none" }}
                   to={`top/detail/${elem.id}`}
                 >
-                  <Card sx={{ width: "100%", marginTop: 5, height: 'auto' }}>
+                  <Card sx={{ width: "100%", marginTop: 5, height: "auto" }}>
                     <CardActionArea>
                       <CardMedia
                         component="img"
                         height=""
                         // image={`http://localhost:8000/${elem.photo}`}
-                        image={`${process.env.REACT_APP_BASE_URL/elem.photo}`}
+                        image={`${process.env.REACT_APP_BASE_URL}${elem.photo}`}
                         alt="green iguana"
-                        sx={{ height: "50%", fitContent: 'cover' }}
+                        sx={{ height: "50%", fitContent: "cover" }}
                       />
                       <CardContent sx={{ height: "50%" }}>
                         <Typography gutterBottom variant="h6" component="div">
