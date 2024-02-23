@@ -269,7 +269,7 @@ export default function Detail() {
     const getHotelDetail = () => {
       axios({
         // url: `http://localhost:8000/top/detail/${pk}`,
-        url: `${process.env.REACT_APP_BASES_URL/top/detail/pk}`,
+        url: `${process.env.REACT_APP_BASES_URL}/top/detail/${pk}`,
         method: "GET",
       })
         .then((res) => setDetail(res.data))
