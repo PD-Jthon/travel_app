@@ -269,7 +269,7 @@ export default function Detail() {
     const getHotelDetail = () => {
       axios({
         // url: `http://localhost:8000/top/detail/${pk}`,
-        url: `${process.env.REACT_APP_BASES_URL}/top/detail/${pk}`,
+        url: `${process.env.REACT_APP_BASE_URL}/top/detail/${pk}`,
         method: "GET",
       })
         .then((res) => setDetail(res.data))
@@ -353,7 +353,7 @@ export default function Detail() {
                     component="img"
                     height="140"
                     // image={`http://localhost:8000/${elem.photo}`}
-                    image={`${process.env.REACT_APP_BASES_URL}${elem.photo}`}
+                    image={`${process.env.REACT_APP_BASE_URL}${elem.photo}`}
                     alt="green iguana"
                     style={{
                       maxWidth: "100%",

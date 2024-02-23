@@ -109,7 +109,7 @@ function ChildModal({
   useEffect(() => {
     axios({
       // url: `http://localhost:8000/top/get-hotel-info/${modalElem.hotel_name}`,
-      url: `${process.env.REACT_APP_BASE_URL}top/get-hotel-info/${modalElem.hotel_name}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/get-hotel-info/${modalElem.hotel_name}`,
       method: "GET",
     })
       .then((res) => {
