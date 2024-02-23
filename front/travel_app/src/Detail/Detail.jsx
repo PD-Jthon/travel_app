@@ -268,7 +268,8 @@ export default function Detail() {
   useEffect(() => {
     const getHotelDetail = () => {
       axios({
-        url: `http://localhost:8000/top/detail/${pk}`,
+        // url: `http://localhost:8000/top/detail/${pk}`,
+        url: `${process.env.REACT_APP_BASES_URL / pk}`,
         method: "GET",
       })
         .then((res) => setDetail(res.data))
@@ -351,7 +352,8 @@ export default function Detail() {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`http://localhost:8000/${elem.photo}`}
+                    // image={`http://localhost:8000/${elem.photo}`}
+                    image={`${process.env.REACT_APP_BASES_URL / elem.photo}`}
                     alt="green iguana"
                     style={{
                       maxWidth: "100%",

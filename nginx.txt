@@ -1,13 +1,30 @@
 server {
         listen 80;
         listen [::]:80;
- 
+
         server_name 23.20.99.37 ;
- 
-        root /home/ubuntu/travel_app/front/travel_app/build;
-        index index.html index.htm index.nginx-debian.html;
- 
-        location /{
+
+        location / {
+            proxy_pass             http://localhost:3000;
+            proxy_read_timeout     60;
+            proxy_connect_timeout  60;
+            proxy_redirect         off;
+
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+    }
+
+         location /static_file{
+        alias /usr/share/nginx/html/static_file;
+        }
+
+        location /media_file{
+        alias /usr/share/nginx/html/media_file;
+        }
+        location /top{
                 include proxy_params;
                 proxy_pass http://unix:/home/ubuntu/travel_app/server/venv_travel_app/travel_app/config.sock;
         }

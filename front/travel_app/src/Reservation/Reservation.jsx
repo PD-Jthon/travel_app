@@ -108,7 +108,8 @@ function ChildModal({
   // 宿の情報を取得して定員を以上を登録できないようにする
   useEffect(() => {
     axios({
-      url: `http://localhost:8000/top/get-hotel-info/${modalElem.hotel_name}`,
+      // url: `http://localhost:8000/top/get-hotel-info/${modalElem.hotel_name}`,
+      url: `${process.env.REACT_APP_BASES_URL / modalElem.hotel_name}`,
       method: "GET",
     })
       .then((res) => {
