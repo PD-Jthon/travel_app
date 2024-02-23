@@ -353,7 +353,7 @@ export default function Detail() {
                     component="img"
                     height="140"
                     // image={`http://localhost:8000/${elem.photo}`}
-                    image={`${process.env.REACT_APP_BASES_URL / elem.photo}`}
+                    image={`${process.env.REACT_APP_BASES_URL}${elem.photo}`}
                     alt="green iguana"
                     style={{
                       maxWidth: "100%",
