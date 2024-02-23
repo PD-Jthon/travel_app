@@ -66,7 +66,7 @@ export default function PopularHotels() {
                         component="img"
                         height=""
                         // image={`http://localhost:8000/${elem.photo}`}
-                        image={`${process.env.REACT_APP_BASE_URL}${elem.photo}`}
+                        image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
                         alt="green iguana"
                         sx={{ height: "50%", fitContent: "cover" }}
                       />

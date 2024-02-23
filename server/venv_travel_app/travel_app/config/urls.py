@@ -24,7 +24,7 @@ Router = DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('top/', include('travel_app.urls')),
+    path('top/', include('travel_app.urls')),   
     path('accounts/', include('allauth.urls')),  # 確認
     path('accounts/', include('accounts.urls')),
 
