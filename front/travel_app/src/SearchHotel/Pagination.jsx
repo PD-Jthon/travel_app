@@ -47,7 +47,8 @@ export default function BasicPagination({ pagination, setPagination }) {
     }
 
     if (price) {
-      const newUrl = `http://localhost:8000/top/search-price/${price}`;
+      // const newUrl = `http://localhost:8000/top/search-price/${price}`;
+      const newUrl = `${process.env.REACT_APP_BASE_URL}/top/search-price/${price}`;
       axios({
         url: newUrl,
         method: "GET",
@@ -67,7 +68,8 @@ export default function BasicPagination({ pagination, setPagination }) {
         })
         .catch((error) => console.log(error));
     } else if (searchWord || searchWord === undefined) {
-      const newUrl = `http://localhost:8000/top/search-word/${searchWord}?page=${newPage}`;
+      // const newUrl = `http://localhost:8000/top/search-word/${searchWord}?page=${newPage}`;
+      const newUrl = `${process.env.REACT_APP_BASE_URL}/top/search-word/${searchWord}?page=${newPage}`;
       axios({
         url: newUrl,
         method: "GET",

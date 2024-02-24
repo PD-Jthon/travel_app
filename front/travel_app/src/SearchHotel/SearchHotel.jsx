@@ -302,7 +302,8 @@ export default function SearchHotel() {
 
   const handlePriceSearch = () => {
     axios({
-      url: `http://localhost:8000/top/search-price/${rawPrice}`,
+      // url: `http://localhost:8000/top/search-price/${rawPrice}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/search-price/${rawPrice}`,
       method: "GET",
     })
       .then((res) => {
@@ -323,7 +324,8 @@ export default function SearchHotel() {
 
   const handlePrefSearch = () => {
     axios({
-      url: `http://localhost:8000/top/search/${pref}`,
+      // url: `http://localhost:8000/top/search/${pref}`,
+      url: `${process.env.REACT_APP_BASE_URL}/search/${pref}`,
       method: "GET",
     })
       .then((res) => {
@@ -595,7 +597,8 @@ export default function SearchHotel() {
                       <MyCardMedia
                         component="img"
                         // sx={{ width: "40%" }}
-                        image={`http://localhost:8000/${elem.photo}`}
+                        // image={`http://localhost:8000/${elem.photo}`}
+                        image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
                         alt="Live from space album cover"
                       />
                       <MyBox

@@ -141,7 +141,8 @@ const ReservationForm = ({
     console.log("checkInOutValue", checkInOutValue);
 
     axios({
-      url: "http://localhost:8000/top/confirm-reservation/",
+      // url: "http://localhost:8000/top/confirm-reservation/",
+      url: `${process.env.REACT_APP_BASE_URL}/top/confirm-reservation`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

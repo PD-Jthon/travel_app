@@ -67,7 +67,8 @@ export default function Login() {
     // document.cookie = `password=${data.password};`
 
     axios({
-      url: "http://localhost:8000/dj-rest-auth/login/",
+      // url: "http://localhost:8000/dj-rest-auth/login/",
+      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/login`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +95,8 @@ export default function Login() {
 
         // ここでユーザーの情報を紹介してsetUserでuserにデータを登録している
         axios({
-          url: "http://localhost:8000/dj-rest-auth/user/",
+          // url: "http://localhost:8000/dj-rest-auth/user/",
+          url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user`,
           method: "GET",
           withCredentials: true,
         })

@@ -91,7 +91,8 @@ export default function App() {
   useEffect(() => {
     if (!isLoggedIn && !authChecked) {
       axios({
-        url: "http://localhost:8000/dj-rest-auth/logout/",
+        // url: "http://localhost:8000/dj-rest-auth/logout/",
+        url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/logout`,
         method: "GET",
       })
         .then(console.log("ログアウトしました。"))
@@ -106,7 +107,8 @@ export default function App() {
     console.log(GetCookieValue("password"));
 
     axios({
-      url: "http://localhost:8000/accounts/check-login-status/",
+      // url: "http://localhost:8000/accounts/check-login-status/",
+      url: `${process.env.REACT_APP_BASE_URL}/accounts/check-login-status`,
       method: "GET",
       withCredentials: true, // Move this here
     })

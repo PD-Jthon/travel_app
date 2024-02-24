@@ -137,7 +137,8 @@ function ChildModal({
     const checkOut = dateFormatter(checkInOutValue[1]["$d"]);
     const id = modalElem.id;
     axios({
-      url: `http://localhost:8000/top/change-reservation/${id}`,
+      // url: `http://localhost:8000/top/change-reservation/${id}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/change-reservation/${id}`,
       method: "POST",
       data: {
         num_people: num,
@@ -156,7 +157,8 @@ function ChildModal({
 
         const id = JSON.parse(user).pk;
         axios({
-          url: `http://localhost:8000/top/get-reservation/${id}`,
+          // url: `http://localhost:8000/top/get-reservation/${id}`,
+          url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
           method: "GET",
         })
           .then((res) => {
@@ -301,7 +303,8 @@ export default function Reservation() {
 
       // ここでユーザーの情報を紹介してsetUserでuserにデータを登録している
       axios({
-        url: "http://localhost:8000/dj-rest-auth/user/",
+        // url: "http://localhost:8000/dj-rest-auth/user/",
+        url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user`,
         method: "GET",
         withCredentials: true,
       })
@@ -321,7 +324,8 @@ export default function Reservation() {
         console.log("user", user);
         let id = JSON.parse(user).pk;
         axios({
-          url: `http://localhost:8000/top/get-reservation/${id}`,
+          // url: `http://localhost:8000/top/get-reservation/${id}`,
+          url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
           method: "GET",
         })
           .then((res) => {
@@ -336,7 +340,8 @@ export default function Reservation() {
         console.log(data);
         const id = data["pk"];
         axios({
-          url: `http://localhost:8000/top/get-reservation/${id}`,
+          // url: `http://localhost:8000/top/get-reservation/${id}`,
+          url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
           method: "GET",
         })
           .then((res) => {

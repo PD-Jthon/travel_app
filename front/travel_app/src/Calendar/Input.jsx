@@ -115,7 +115,8 @@ export default function UnstyledInputIntroduction() {
     console.log(value);
     setSearch(value);
     axios({
-      url: `http://localhost:8000/top/search-word/${value}`,
+      // url: `http://localhost:8000/top/search-word/${value}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${value}`,
       method: "GET",
     })
       .then((res) => navigate("/top/search-word"))

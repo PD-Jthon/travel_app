@@ -35,7 +35,8 @@ export default function CancelModal({
     console.log(data);
     const id = data["pk"];
     axios({
-      url: `http://localhost:8000/top/get-reservation/${id}`,
+      // url: `http://localhost:8000/top/get-reservation/${id}`,
+      url: `${process.env.REACT_APP_BASE_URL}/get-reservation/${id}`,
       method: "GET",
     })
       .then((res) => {
@@ -48,7 +49,8 @@ export default function CancelModal({
   const hanldeDeleteReservation = () => {
     const id = modalElem.id;
     axios({
-      url: `http://localhost:8000/top/delete-reservation/${id}`,
+      // url: `http://localhost:8000/top/delete-reservation/${id}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/delete-reservation/${id}`,
       method: "GET",
     })
       .then((res) => {

@@ -155,6 +155,7 @@ function DrawerAppBar(props) {
   const handleLogOut = () => {
     axios({
       url: "http://localhost:8000/dj-rest-auth/logout",
+      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/logout`,
       method: "GET",
       withCredentials: true,
     })
