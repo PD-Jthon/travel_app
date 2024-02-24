@@ -30,7 +30,8 @@ const useUserAuth = () => {
       const token = getCookieValue('token')
       console.log(token);
       const res = await axios({
-        url: "http://localhost:8000/dj-rest-auth/user/",
+        // url: "http://localhost:8000/dj-rest-auth/user/",
+        url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
