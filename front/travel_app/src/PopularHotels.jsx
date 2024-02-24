@@ -65,7 +65,7 @@ export default function PopularHotels() {
                       <CardMedia
                         component="img"
                         height=""
-                        image={`${process.env.REACT_APP_BASE_URL}/media_file/${elem.photo}`}
+                        image={`${process.env.REACT_APP_BASE_URL}${elem.photo}`}
                         alt="green iguana"
                         sx={{ height: "50%", fitContent: "cover" }}
                       />
