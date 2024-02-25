@@ -168,7 +168,8 @@ export default function SearchHotel() {
     if (search && !session) {
       // setWord();
       axios({
-        url: `http://localhost:8000/top/search-word/${search}`,
+        // url: `http://localhost:8000/top/search-word/${search}`,
+        url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${search}`,
         method: "GET",
       })
         .then((res) => {
@@ -212,7 +213,8 @@ export default function SearchHotel() {
       const temp = state.state;
       setWord(state.state);
       axios({
-        url: `http://localhost:8000/top/search-word/${temp}`,
+        // url: `http://localhost:8000/top/search-word/${temp}`,
+        url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${temp}`,
         method: "GET",
       })
         .then((res) => {
@@ -245,7 +247,8 @@ export default function SearchHotel() {
     }
     sessionStorage.setItem("searchWord", JSON.stringify(value));
     axios({
-      url: `http://localhost:8000/top/search-word/${value}`,
+      // url: `http://localhost:8000/top/search-word/${value}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${value}`,
       method: "GET",
     })
       .then((res) => {
