@@ -545,7 +545,7 @@ export default function Detail() {
               </Grid>
             </Grid>
           </Container>
-          <button onClick={() => ModalToggler()}>Modal Toggle</button>
+          {/* <button onClick={() => ModalToggler()}>Modal Toggle</button> */}
           {open && (
             <BasicModal
               ModalToggler={ModalToggler}

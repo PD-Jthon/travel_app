@@ -67,7 +67,7 @@ export default function SignIn() {
     console.log(data)
     axios({
       // url: "http://localhost:8000/dj-rest-auth/registration/",
-      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/registration`,
+      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/registration/`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

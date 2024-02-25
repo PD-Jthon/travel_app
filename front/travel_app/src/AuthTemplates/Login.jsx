@@ -68,7 +68,7 @@ export default function Login() {
 
     axios({
       // url: "http://localhost:8000/dj-rest-auth/login/",
-      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/login`,
+      url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/login/`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function Login() {
         // ここでユーザーの情報を紹介してsetUserでuserにデータを登録している
         axios({
           // url: "http://localhost:8000/dj-rest-auth/user/",
-          url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user`,
+          url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user/`,
           method: "GET",
           withCredentials: true,
         })
@@ -226,7 +226,7 @@ export default function Login() {
           </Box>
         </Container>
       </ThemeProvider>
-      <button onClick={() => setModalOpen(true)}>Click</button>
+      {/* <button onClick={() => setModalOpen(true)}>Click</button> */}
       <LogInModal
         ModalOpen={ModalOpen}
         setModalOpen={setModalOpen}
