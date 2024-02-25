@@ -325,7 +325,7 @@ export default function SearchHotel() {
   const handlePrefSearch = () => {
     axios({
       // url: `http://localhost:8000/top/search/${pref}`,
-      url: `${process.env.REACT_APP_BASE_URL}/search/${pref}`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/search/${pref}`,
       method: "GET",
     })
       .then((res) => {

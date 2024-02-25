@@ -43,7 +43,7 @@ export default function BasicModal({
     console.log(rawReservation);
     axios({
       // url: "http://localhost:8000/top/reservation/",
-      url: `${process.env.REACT_APP_BASE_URL}/top/reservation`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/reservation/`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: rawReservation,
