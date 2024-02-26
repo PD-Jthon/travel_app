@@ -109,7 +109,7 @@ export default function App() {
 
     axios({
       // url: "http://localhost:8000/accounts/check-login-status/",
-      url: `${process.env.REACT_APP_BASE_URL}/accounts/check-login-status`,
+      url: `${process.env.REACT_APP_BASE_URL}/top/check-login-status`,
       method: "GET",
       withCredentials: true, // Move this here
     })

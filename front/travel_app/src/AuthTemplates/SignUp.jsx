@@ -64,12 +64,6 @@ export default function SignIn() {
     }
   `;
 
-  // function reloadPage() {
-  //   setTimeout(() => {
-  //     window.location.reload();
-  //   }, "2000");
-  // }
-
   const onSubmit = (data) => {
     console.log(data);
     axios({

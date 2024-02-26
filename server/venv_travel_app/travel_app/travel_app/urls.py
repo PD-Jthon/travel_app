@@ -15,5 +15,7 @@ urlpatterns = [
     path('get-hotel-info/<str:name>', views.GetHotelInfoView.as_view(), name='get-hotel-info'),
     path('change-reservation/<int:pk>', views.ChangeReservationView.as_view(), name='change-reservation'),
     path('delete-reservation/<int:pk>', views.DeleteReservationView.as_view(), name='delete-reservation'),
+    path('check-login-status/', views.CheckLoginStatusView.as_view(), name='check-login-status'),
+    path('login-user-profile/', views.GetLoginUserProfile.as_view(), name='get-login-user'),
     # path('search/<str:value>', views.SearchView.as_view(), name='search-top'),
 ]

@@ -223,3 +223,21 @@ class DeleteReservationView(APIView):
       instance.delete()
       return Response(True, status=status.HTTP_200_OK)
     return Response(False, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckLoginStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return Response(True)
+        else:
+            return Response(False)
+
+class GetLoginUserProfile(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_profile = request.user
+        print(user_profile)
+        return Response(user_profile)
