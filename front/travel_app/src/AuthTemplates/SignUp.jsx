@@ -66,7 +66,7 @@ export default function SignIn() {
 
   function reloadPage() {
     setTimeout(() => {
-      window.location.reload();
+      window.location.reload(`${process.env.REACT_APP_BASE_URL}`);
     }, "2000");
   }
 
@@ -78,7 +78,6 @@ export default function SignIn() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": GetCookieValue("csrftoken"),
       },
       data: {
         username: data.username,

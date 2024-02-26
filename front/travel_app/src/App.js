@@ -147,7 +147,7 @@ export default function App() {
               <Route path="/" element={<Top />} />
               <Route path="top/detail/:pk" element={<Detail />} />
               <Route path="top/search/:pref" element={<SearchHotel />} />
-              <Route path="top/search-word/" element={<SearchHotel />} />
+              <Route path="top/search-word" element={<SearchHotel />} />
               {/* <Route path="/top/search-word/:word" element={<SearchHotel />} /> */}
               {SearchRoutes.map((route) => (
                 <Route
