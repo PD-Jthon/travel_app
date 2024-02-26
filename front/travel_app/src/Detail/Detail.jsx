@@ -130,7 +130,7 @@ const ReservationForm = ({
     const checkOut = ConvertDate(checkInOutValue[1]["$d"]);
 
     handleSetRawReservation({
-      user: JSON.parse(user).pk,
+      user: user['pk'],
       hotel: pk,
       num_people: numberOfPeople,
       check_in: checkIn,
@@ -148,7 +148,8 @@ const ReservationForm = ({
         "Content-Type": "application/json",
       },
       data: {
-        user: JSON.parse(user).pk,
+        // user: JSON.parse(user).pk,
+        user: user['pk'],
         hotel: pk,
         num_people: numberOfPeople,
         check_in: checkIn,
