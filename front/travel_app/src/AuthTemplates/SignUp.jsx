@@ -64,14 +64,13 @@ export default function SignIn() {
     }
   `;
 
-  function reloadPage() {
-    setTimeout(() => {
-      window.location.reload();
-    }, "2000");
-  }
+  // function reloadPage() {
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, "2000");
+  // }
 
   const onSubmit = (data) => {
-    reloadPage(); // 追加
     console.log(data);
     axios({
       // url: "http://localhost:8000/dj-rest-auth/registration/",
