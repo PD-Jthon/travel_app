@@ -14,6 +14,7 @@ import axios from "axios";
 import { alertState } from "../Alert/Alert";
 import SuccessModal from "../AuthTemplates/SuccessModal";
 import { useRecoilState } from "recoil";
+import GetCookieValue from "../GetCookie.jsx/GetCookie";
 
 const style = {
   position: "absolute",
@@ -45,7 +46,10 @@ export default function BasicModal({
       // url: "http://localhost:8000/top/reservation/",
       url: `${process.env.REACT_APP_BASE_URL}/top/reservation/`,
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": GetCookieValue("csrftoken"),
+      },
       data: rawReservation,
     })
       .then((res) => {

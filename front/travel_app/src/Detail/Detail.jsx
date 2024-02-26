@@ -19,6 +19,7 @@ import CheckInOut from "../Calendar/CheckInOut";
 import { useUserState } from "../Atom/user";
 import BasicModal from "./ConfirmResevation";
 import { useForm } from "react-hook-form";
+import GetCookieValue from "../GetCookie.jsx/GetCookie";
 
 const MyContainer = styled(Container)`
   display: flex;
@@ -126,20 +127,20 @@ const ReservationForm = ({
     const jstOffset = 9 * 60 * 60 * 1000; // 日本時間のオフセット（9時間）
     console.log("checkInOutValue", checkInOutValue);
 
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== "") {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === name + "=") {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
-          }
-        }
-      }
-      return cookieValue;
-    }
+    // function getCookie(name) {
+    //   let cookieValue = null;
+    //   if (document.cookie && document.cookie !== "") {
+    //     const cookies = document.cookie.split(";");
+    //     for (let i = 0; i < cookies.length; i++) {
+    //       const cookie = cookies[i].trim();
+    //       if (cookie.substring(0, name.length + 1) === name + "=") {
+    //         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //         break;
+    //       }
+    //     }
+    //   }
+    //   return cookieValue;
+    // }
 
     axios({
       // url: "http://localhost:8000/top/confirm-reservation/",
@@ -147,7 +148,7 @@ const ReservationForm = ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCookie("csrftoken"),
+        "X-CSRFToken": GetCookieValue("csrftoken"),
       },
       data: {
         // user: JSON.parse(user).pk,
