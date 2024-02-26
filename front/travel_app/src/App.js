@@ -4,6 +4,7 @@ import Top from "./Top/Top";
 import {
   BrowserRouter,
   BrowserRouter as Router,
+  HashRouter,
   Navigate,
   Outlet,
   Route,
@@ -132,7 +133,7 @@ export default function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Container>
           <DrawerAppBar authenticated={isLoggedIn} />
         </Container>
@@ -179,7 +180,7 @@ export default function App() {
         </div>
         {/* <Parent /> */}
         <Footer style={{ position: "fixed" }} />
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
