@@ -66,11 +66,12 @@ export default function SignIn() {
 
   function reloadPage() {
     setTimeout(() => {
-      window.location.reload(`${process.env.REACT_APP_BASE_URL}`);
+      window.location.reload(`${process.env.REACT_APP_BASE_URL}/`);
     }, "2000");
   }
 
   const onSubmit = (data) => {
+    reloadPage(); // 追加
     console.log(data);
     axios({
       // url: "http://localhost:8000/dj-rest-auth/registration/",
@@ -87,7 +88,7 @@ export default function SignIn() {
       },
     })
       .then(() => {
-        reloadPage();
+        // reloadPage();
         setMessage("会員登録に成功しました。");
         setIsSuccess(true);
         setModalOpen(true);
