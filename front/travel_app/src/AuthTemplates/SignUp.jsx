@@ -66,7 +66,7 @@ export default function SignIn() {
 
   function reloadPage() {
     setTimeout(() => {
-      window.location.reload(`${process.env.REACT_APP_BASE_URL}/`);
+      window.location.reload();
     }, "2000");
   }
 
