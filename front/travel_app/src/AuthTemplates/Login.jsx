@@ -1,45 +1,31 @@
 import axios from "axios";
-import { useEffect } from "react";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
 import LogInModal from "./LogInModal";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoggedInState } from "../Atom/atom";
 import { useUserState } from "../Atom/user";
-import { useUserInfo } from "../Atom/userInfo";
-import GetUserInfo from "./GetUserInfo";
 
 const defaultTheme = createTheme();
-// export const tokenState = atom({
-//   key: 'token',
-//   default: '',
-// })
 
 export default function Login() {
-  const [login, setLogin] = useState([]);
   const [ModalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [token, setToken] = useRecoilState(LoggedInState);
   const [isLoggedIn, setLoggedIn] = useRecoilState(LoggedInState);
   const { user, setUser } = useUserState();
-  const { userInfo, setUserInfo } = useUserInfo();
 
   const {
-    getValues,
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -63,8 +49,6 @@ export default function Login() {
       email: data.email,
       password: data.password,
     });
-    // document.cookie = `email=${data.email};`
-    // document.cookie = `password=${data.password};`
 
     axios({
       // url: "http://localhost:8000/dj-rest-auth/login/",
@@ -72,7 +56,6 @@ export default function Login() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "withCredentials": true,
       },
       data: {
         username: "",
@@ -138,7 +121,6 @@ export default function Login() {
             </Typography>
             <Box
               component="form"
-              // onSubmit={handleSubmit}
               noValidate
               sx={{ mt: 1 }}
               onSubmit={handleSubmit(onSubmit)}
@@ -163,10 +145,6 @@ export default function Login() {
                   },
                 })}
                 error={!!errors.email}
-                // helperText={
-                //   !!errors.email && "メールアドレスを入力してください。"
-                // }
-                // autoFocus
               />
               {errors.email && (
                 <span
@@ -208,7 +186,6 @@ export default function Login() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                // onClick={(data) => handleRegistration(data)}
               >
                 ログイン
               </Button>
@@ -218,15 +195,11 @@ export default function Login() {
                     パスワードを忘れましたか？
                   </HoverLink>
                 </Grid>
-                {/* <Grid item>
-                <HoverLink to="sign_up/">{"ユーザー登録はまだですか？"}</HoverLink>
-              </Grid> */}
               </Grid>
             </Box>
           </Box>
         </Container>
       </ThemeProvider>
-      {/* <button onClick={() => setModalOpen(true)}>Click</button> */}
       <LogInModal
         ModalOpen={ModalOpen}
         setModalOpen={setModalOpen}

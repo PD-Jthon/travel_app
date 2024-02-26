@@ -2,37 +2,23 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
-// import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-// import Typography from "@mui/material/Typography";
-// import { CardActionArea } from "@mui/material";
 import { Container } from "@mui/system";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Header2 from "../Common/Header2";
 import styled from "styled-components";
 import { Button, TextField } from "@mui/material";
-import { useRecoilState, useRecoilStateLoadable } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoggedInState } from "../Atom/atom";
-import Calendar from "../Calendar/Calendar";
 import CheckInOut from "../Calendar/CheckInOut";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { useUserState } from "../Atom/user";
 import BasicModal from "./ConfirmResevation";
-import Modal from "../Modal/Modal";
-import { set } from "react-hook-form";
-import { useForm, SubmitHandler } from "react-hook-form";
-import moment from "moment";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+import { useForm } from "react-hook-form";
 
 const MyContainer = styled(Container)`
   display: flex;
@@ -130,7 +116,7 @@ const ReservationForm = ({
     const checkOut = ConvertDate(checkInOutValue[1]["$d"]);
 
     handleSetRawReservation({
-      user: user['pk'],
+      user: user["pk"],
       hotel: pk,
       num_people: numberOfPeople,
       check_in: checkIn,
@@ -140,16 +126,32 @@ const ReservationForm = ({
     const jstOffset = 9 * 60 * 60 * 1000; // 日本時間のオフセット（9時間）
     console.log("checkInOutValue", checkInOutValue);
 
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
     axios({
       // url: "http://localhost:8000/top/confirm-reservation/",
       url: `${process.env.REACT_APP_BASE_URL}/top/confirm-reservation/`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
       },
       data: {
         // user: JSON.parse(user).pk,
-        user: user['pk'],
+        user: user["pk"],
         hotel: pk,
         num_people: numberOfPeople,
         check_in: checkIn,
@@ -165,8 +167,6 @@ const ReservationForm = ({
     // todo: modalで入力値を捕捉してユーザーがokを押した場合にDBにデータを登録するようにする
   };
 
-  const handleSubmitReservation = () => {};
-
   return (
     <>
       <Paper elevation={5} sx={{ padding: 2, borderRadius: 2 }}>
@@ -178,20 +178,7 @@ const ReservationForm = ({
               name="check_inout"
               handleCheckInOutChange={handleCheckInOutChange}
               checkInOutValue={checkInOutValue}
-              // {...register("check_inout", {
-              //   required: {
-              //     value: true,
-              //     message: "必須の入力項目です。",
-              //   },
-              // })}
             />
-            {/* {errors.check_inout && (
-              <span
-                style={{ fontSize: "12px", color: "red", marginLeft: "12px" }}
-              >
-                {errors.check_inout.message}
-              </span>
-            )} */}
           </Grid>
           <Grid xs={12}>
             <Grid item marginBottom={1}>
@@ -264,8 +251,6 @@ export default function Detail() {
   };
 
   const pk = useParams()["pk"];
-  // console.log(pk);
-  // console.log(isLoggedIn);
 
   useEffect(() => {
     const getHotelDetail = () => {
@@ -279,11 +264,6 @@ export default function Detail() {
     };
     getHotelDetail();
   }, []);
-
-  const Cell = {
-    width: "80%",
-    padding: 10,
-  };
 
   const headCell = {
     fontWeight: 600,
@@ -383,12 +363,7 @@ export default function Detail() {
                           >
                             宿名
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align="start"
-                          >
-                            {elem.name}
-                          </ElemCell>
+                          <ElemCell align="start">{elem.name}</ElemCell>
                         </TableRow>
 
                         <TableRow
@@ -405,12 +380,7 @@ export default function Detail() {
                           >
                             説明
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align="start"
-                          >
-                            {elem.description}
-                          </ElemCell>
+                          <ElemCell align="start">{elem.description}</ElemCell>
                         </TableRow>
                         <TableRow
                           key=""
@@ -426,12 +396,7 @@ export default function Detail() {
                           >
                             宿泊料金
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align=""
-                          >
-                            {elem.price_range}
-                          </ElemCell>
+                          <ElemCell align="">{elem.price_range}</ElemCell>
                         </TableRow>
                         <TableRow
                           key=""
@@ -447,12 +412,7 @@ export default function Detail() {
                           >
                             定員
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align=""
-                          >
-                            {elem.max_capacity}
-                          </ElemCell>
+                          <ElemCell align="">{elem.max_capacity}</ElemCell>
                         </TableRow>
                         <TableRow
                           key=""
@@ -468,12 +428,7 @@ export default function Detail() {
                           >
                             郵便番号
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align=""
-                          >
-                            {elem.zip_number}
-                          </ElemCell>
+                          <ElemCell align="">{elem.zip_number}</ElemCell>
                         </TableRow>
                         <TableRow
                           key=""
@@ -489,12 +444,7 @@ export default function Detail() {
                           >
                             住所
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align=""
-                          >
-                            {elem.address}
-                          </ElemCell>
+                          <ElemCell align="">{elem.address}</ElemCell>
                         </TableRow>
                         <TableRow
                           key=""
@@ -510,12 +460,7 @@ export default function Detail() {
                           >
                             電話番号
                           </TitleCell>
-                          <ElemCell
-                            // style={Cell}
-                            align=""
-                          >
-                            {elem.phone_number}
-                          </ElemCell>
+                          <ElemCell align="">{elem.phone_number}</ElemCell>
                         </TableRow>
                       </TableBody>
                     </Table>
@@ -546,7 +491,6 @@ export default function Detail() {
               </Grid>
             </Grid>
           </Container>
-          {/* <button onClick={() => ModalToggler()}>Modal Toggle</button> */}
           {open && (
             <BasicModal
               ModalToggler={ModalToggler}

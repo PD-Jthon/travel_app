@@ -1,8 +1,4 @@
-import Button from "@mui/material/Button";
-import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-// import "../Modal/style.css";
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -52,11 +48,6 @@ export default function LogInModal({
             >
               {children}
             </Typography>
-            {/* <span style={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" onClick={closeModal}>
-                Close
-              </Button>
-            </span> */}
           </Box>
         </Modal>
       </>

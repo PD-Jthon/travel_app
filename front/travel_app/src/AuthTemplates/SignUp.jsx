@@ -33,7 +33,7 @@ export default function SignIn() {
 
   const [ModalOpen, setModalOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -64,7 +64,7 @@ export default function SignIn() {
   `;
 
   const onSubmit = (data) => {
-    console.log(data)
+    console.log(data);
     axios({
       // url: "http://localhost:8000/dj-rest-auth/registration/",
       url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/registration/`,
@@ -80,44 +80,17 @@ export default function SignIn() {
       },
     })
       .then(() => {
-        setMessage('会員登録に成功しました。')
-        setIsSuccess(true)
+        setMessage("会員登録に成功しました。");
+        setIsSuccess(true);
         setModalOpen(true);
-        // navigate("/signup_success");
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         setModalOpen(true);
         setIsSuccess(false);
-        setMessage('会員登録に失敗しました。')
+        setMessage("会員登録に失敗しました。");
       });
   };
-
-  // const handleSubmit = (event) => {
-  //   console.log(event);
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget); // event.currentTargetでフォームのデータを取得できる
-  //   console.log({
-  //     username: data.get("username"),
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  //   axios({
-  //     url: "http://localhost:8000/dj-rest-auth/registration/",
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     data: {
-  //       username: data.get("username"),
-  //       email: data.get("email"),
-  //       password1: data.get("password1"),
-  //       password2: data.get("password2"),
-  //     },
-  //   })
-  //     .then(() => navigate("/signup_success"))
-  //     .catch((error) => console.log(error));
-  // };
 
   return (
     <>
@@ -140,14 +113,12 @@ export default function SignIn() {
             </Typography>
             <Box
               component="form"
-              // onSubmit={handleSubmit}
               noValidate
               sx={{ mt: 1 }}
               onSubmit={handleSubmit(onSubmit)}
             >
               <TextField
                 margin="normal"
-                // required
                 fullWidth
                 id="username"
                 label="ユーザー名"
@@ -161,8 +132,6 @@ export default function SignIn() {
                   },
                 })}
                 error={!!errors.username}
-                // helperText={!!errors.username && "名前を入力してください。"}
-                // onChange={(e) => setUsername(e.target.value)}
               />
               {errors.username && (
                 <span
@@ -190,10 +159,6 @@ export default function SignIn() {
                   },
                 })}
                 error={!!errors.email}
-                // helperText={
-                //   !!errors.email && "メールアドレスを入力してください。"
-                // }
-                // autoFocus
               />
               {errors.email && (
                 <span
@@ -264,7 +229,6 @@ export default function SignIn() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                // onClick={(data) => handleRegistration(data)}
               >
                 登録
               </Button>
@@ -274,17 +238,16 @@ export default function SignIn() {
                     パスワードを忘れましたか？
                   </HoverLink>
                 </Grid>
-                {/* <Grid item>
-                <HoverLink to="sign_up/">{"ユーザー登録はまだですか？"}</HoverLink>
-              </Grid> */}
               </Grid>
             </Box>
           </Box>
-          {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
         </Container>
       </ThemeProvider>
-      {/* <button onClick={() => setModalOpen(true)}>Click</button> */}
-      <SuccessModal ModalOpen={ModalOpen} setModalOpen={setModalOpen} isSuccess={isSuccess}>
+      <SuccessModal
+        ModalOpen={ModalOpen}
+        setModalOpen={setModalOpen}
+        isSuccess={isSuccess}
+      >
         <h2>{message}</h2>
       </SuccessModal>
     </>

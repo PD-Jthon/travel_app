@@ -1,8 +1,4 @@
-import Button from "@mui/material/Button";
-import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-// import "../Modal/style.css";
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -20,34 +16,25 @@ const style = {
   p: 4,
 };
 
-export default function SuccessModal({ ModalOpen, setModalOpen, children, isSuccess }) {
+export default function SuccessModal({
+  ModalOpen,
+  setModalOpen,
+  children,
+  isSuccess,
+}) {
   const navigate = useNavigate();
   const closeModal = () => {
-    if(isSuccess) {
+    if (isSuccess) {
       navigate("/");
     } else {
-      navigate('/sign_up/');
+      navigate("/sign_up/");
     }
     setModalOpen(false);
-
   };
 
   if (ModalOpen) {
     return (
       <>
-        {/* <div id="overlay" onClick={closeModal}>
-          <div id="content" onClick={(e) => e.stopPropagation()}>
-            <Container
-              sx={{ display: "flex", justifyContent: "center" }}
-            ></Container>
-            <span style={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" onClick={closeModal}>
-                Close
-              </Button>
-            </span>
-          </div>
-        </div> */}
-
         <Modal
           open={ModalOpen}
           onClose={closeModal}
@@ -55,19 +42,12 @@ export default function SuccessModal({ ModalOpen, setModalOpen, children, isSucc
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            {/* <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-            ></Typography> */}
-            <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: '15px' }}>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2, fontSize: "15px" }}
+            >
               {children}
             </Typography>
-            {/* <span style={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" onClick={closeModal}>
-                Close
-              </Button>
-            </span> */}
           </Box>
         </Modal>
       </>
