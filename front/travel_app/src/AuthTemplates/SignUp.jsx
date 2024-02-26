@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 import SuccessModal from "./SuccessModal";
+import GetCookieValue from "../GetCookie.jsx/GetCookie";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -63,6 +64,12 @@ export default function SignIn() {
     }
   `;
 
+  function reloadPage() {
+    setTimeout(() => {
+      window.location.reload();
+    }, "2000");
+  }
+
   const onSubmit = (data) => {
     console.log(data);
     axios({
@@ -71,6 +78,7 @@ export default function SignIn() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": GetCookieValue("csrftoken"),
       },
       data: {
         username: data.username,
@@ -80,6 +88,7 @@ export default function SignIn() {
       },
     })
       .then(() => {
+        reloadPage();
         setMessage("会員登録に成功しました。");
         setIsSuccess(true);
         setModalOpen(true);

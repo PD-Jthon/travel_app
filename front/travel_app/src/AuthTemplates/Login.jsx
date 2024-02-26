@@ -13,6 +13,7 @@ import LogInModal from "./LogInModal";
 import { useRecoilState } from "recoil";
 import { LoggedInState } from "../Atom/atom";
 import { useUserState } from "../Atom/user";
+import GetCookieValue from "../GetCookie.jsx/GetCookie";
 
 const defaultTheme = createTheme();
 
@@ -56,6 +57,7 @@ export default function Login() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": GetCookieValue("csrftoken"),
       },
       data: {
         username: "",
@@ -96,7 +98,6 @@ export default function Login() {
         setIsSuccess(false);
         setMessage("ログインに失敗しました。");
         setModalOpen(true);
-        // navigate("/fail_login")
       });
   };
 
