@@ -55,11 +55,11 @@ function DrawerAppBar(props) {
   };
 
   useEffect(() => {
-    const signUpBtn = document.querySelector('.sign-up')
-    if(isLoggedIn && signUpBtn) {
-      signUpBtn.remove()
+    const signUpBtn = document.querySelector(".sign-up");
+    if (isLoggedIn && signUpBtn) {
+      signUpBtn.remove();
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn]);
 
   const drawer = (
     <Box
@@ -160,28 +160,22 @@ function DrawerAppBar(props) {
       withCredentials: true,
     })
       .then(() => {
-        // alert("ログアウトしました。");
         localStorage.removeItem("token");
         document.cookie = "token=; max-age=0";
         console.log(document.cookie);
-        // setLoggedIn((prev) => !prev);
         setLoggedIn(false);
         setAlert({ severity: "success", message: "ログアウトしました。" });
       })
       .catch((error) => console.log(error));
-    // setLoggedIn(false);
   };
 
-  // const handleGetReservation = () => {
-  //   axios
-  // }
 
   return (
     <Box
       sx={{
         display: "flex",
         position: "fixed",
-        zIndex: '9',
+        zIndex: "9",
         top: 0,
         left: 0,
         right: 0,
@@ -274,7 +268,6 @@ function DrawerAppBar(props) {
                         fontSize: 15,
                         textShadow: "3px 4px 3px rgb(61 70 70)",
                       }}
-                      // onClick={() => handleGetReservation()}
                     >
                       予約一覧
                     </Button>
@@ -293,7 +286,7 @@ function DrawerAppBar(props) {
                     <Link
                       to={`sign_up/`}
                       style={{ color: "#fff", textDecoration: "none" }}
-                      className='sign-up'
+                      className="sign-up"
                     >
                       会員登録
                     </Link>
@@ -340,7 +333,7 @@ function DrawerAppBar(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "block" },
@@ -348,7 +341,6 @@ function DrawerAppBar(props) {
               boxSizing: "border-box",
               width: drawerWidth,
             },
-            // zIndex: 1000,
           }}
         >
           {drawer}

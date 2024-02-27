@@ -1,32 +1,19 @@
 import axios from "axios";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import {
-  Link,
-  unstable_HistoryRouter,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
 import {
   CardActionArea,
   Container,
   FormLabel,
   Grid,
-  InputBase,
   ListSubheader,
-  paginationItemClasses,
   Paper,
   TextField,
 } from "@mui/material";
@@ -36,19 +23,11 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
-import {
-  LocalConvenienceStoreOutlined,
-  SettingsSuggestOutlined,
-} from "@mui/icons-material";
 import { SearchAtom } from "../Atom/SearchResultAtom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { SearchQuery } from "../Atom/SeachQuery";
 import GetCookieValue from "../GetCookie.jsx/GetCookie.jsx";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import BasicPagination from "./Pagination";
-
-// import UnstyledInputIntroduction from "../Calendar/Input";
 
 const MyCard = styled(Card)`
   height: 300px;
@@ -63,8 +42,6 @@ const MyCard = styled(Card)`
 `;
 
 const MyCardMedia = styled(CardMedia)`
-  // display: "flex",
-  // flexDirection: "column",
 
   @media screen and (max-width: 600px) {
     width: 100%;
@@ -144,12 +121,7 @@ const priceOption = {
 };
 
 export default function SearchHotel() {
-  const theme = useTheme();
-  const [hotel, setHotel] = useState([]);
-  const [age, setAge] = React.useState("");
-  const [result, setResult] = useState([]);
   const [word, setWord] = useState([]);
-  const navigate = useNavigate();
   const [query, setQuery] = useRecoilState(SearchQuery);
   const inputRef = useRef(null);
   const { state } = useLocation();
@@ -166,7 +138,6 @@ export default function SearchHotel() {
 
   useEffect(() => {
     if (search && !session) {
-      // setWord();
       axios({
         // url: `http://localhost:8000/top/search-word/${search}`,
         url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${search}`,
@@ -196,9 +167,6 @@ export default function SearchHotel() {
     let searchWord = sessionStorage.getItem("searchWord");
     const sessionPagination = JSON.parse(sessionStorage.getItem("pagination"));
     console.log("searchItem", searchItem);
-    // if (searchWord === "undefined") {
-    //   searchWord = undefined;
-    // }
     if (searchItem) {
       setQuery(searchItem);
       setPagination(sessionPagination);
@@ -218,7 +186,6 @@ export default function SearchHotel() {
         method: "GET",
       })
         .then((res) => {
-          // console.log(res.data.results);
           setQuery(res.data.results);
           setPagination(res.data.page_status);
           console.log("page", res.data.page_status);
@@ -252,7 +219,6 @@ export default function SearchHotel() {
       method: "GET",
     })
       .then((res) => {
-        // navigate(`/top/search-word/${value}`)
         setQuery(res.data.results);
         setPagination(res.data.page_status);
         setNumOfQuery(res.data.page_status.count);
@@ -267,7 +233,6 @@ export default function SearchHotel() {
       })
       .catch((error) => console.log(error));
   };
-  // console.log(query);
 
   // 日本語入力が終わったかどうかを判断するためのステート群
   const [composing, setComposition] = useState(false);
@@ -355,31 +320,6 @@ export default function SearchHotel() {
     }
   }, []);
 
-  // const handleNext = () => {
-  //   console.log(pagination);
-  //   axios({
-  //     url: pagination.next,
-  //     method: "GET",
-  //   })
-  //     .then((res) => {
-  //       setQuery(res.data.results);
-  //       setPagination(res.data.page_status);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
-
-  // const handleBefore = () => {
-  //   axios({
-  //     url: pagination.previous,
-  //     method: "GET",
-  //   })
-  //     .then((res) => {
-  //       setQuery(res.data.results);
-  //       setPagination(res.data.page_status);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
-
   return (
     <>
       <Container style={{ marginTop: 200 }}>
@@ -402,11 +342,6 @@ export default function SearchHotel() {
                     }
                   }}
                   defaultValue={word}
-                  // onKeyPress={(e) => {
-                  //   if(e.key === 'Enter') {
-                  //     handleSubmit();
-                  //   }
-                  // }}
                 />
               </Grid>
               <Grid md={3} xs={4}>
@@ -425,14 +360,12 @@ export default function SearchHotel() {
                   検索
                 </Button>
               </Grid>
-              {/* </Paper> */}
             </Grid>
           </Grid>
           <Grid item md={8} xs={12} sx={{ marginBottom: 2 }}>
             検索結果 : {numOfQuery ? numOfQuery : 0}件
           </Grid>
         </Grid>
-        {/* <div style={{display: 'flex', justifyContent: 'center', padding: 50, marginTop: 100}}> */}
         <Grid container spacing={4}>
           <Grid item md={4} xs={12}>
             <Paper
@@ -452,11 +385,9 @@ export default function SearchHotel() {
                       </FormLabel>
                       <InputLabel id="demo-simple-select-label" />
                       <Select
-                        // native
                         sx={{ marginBottom: 2 }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        // label="エリアから探す"
                         onChange={handleChange}
                         value={prefValue}
                       >
@@ -526,7 +457,6 @@ export default function SearchHotel() {
                         fontSize: "20px",
                         height: 39,
                         alignItems: "center",
-                        // borderRadius: "0 5px 5px 0",
                       }}
                       alignItems="center"
                       onClick={() => handlePrefSearch()}
@@ -554,7 +484,6 @@ export default function SearchHotel() {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={priceValue}
-                        // label="エリアから探す"
                         onChange={(e) => handlePriceChange(e)}
                       >
                         <MenuItem value={1}>6,000円以内</MenuItem>
@@ -573,7 +502,6 @@ export default function SearchHotel() {
                         fontSize: "20px",
                         height: 39,
                         alignItems: "center",
-                        // borderRadius: "0 5px 5px 0",
                       }}
                       alignItems="center"
                       onClick={() => handlePriceSearch()}
@@ -588,9 +516,6 @@ export default function SearchHotel() {
           <Grid item md={8} xs={12} sx={{ width: "100%", height: "100%" }}>
             {query.map((elem) => (
               <>
-                {/* <h1>{elem.name}</h1> */}
-                {/* <Card sx={{ display: "flex", height: 200 }}> */}
-
                 <CardActionArea sx={{ marginBottom: 3 }}>
                   <Link
                     style={{ textDecoration: "none" }}
@@ -599,20 +524,10 @@ export default function SearchHotel() {
                     <MyCard elevation={5}>
                       <MyCardMedia
                         component="img"
-                        // sx={{ width: "40%" }}
-                        // image={`http://localhost:8000/${elem.photo}`}
                         image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
                         alt="Live from space album cover"
                       />
-                      <MyBox
-                        sx={
-                          {
-                            // display: "flex",
-                            // flexDirection: "column",
-                            // width: "60%",
-                          }
-                        }
-                      >
+                      <MyBox>
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography component="div" variant="h6">
                             {elem.name}
@@ -651,11 +566,16 @@ export default function SearchHotel() {
             ))}
           </Grid>
         </Grid>
-        {/* <button onClick={() => handleBefore()}>prev</button>
-        <button onClick={() => handleNext()}>next</button> */}
       </Container>
 
-      <Container style={{ display: "flex", justifyContent: "center", marginTop: 100, marginBottom: 50 }} >
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 100,
+          marginBottom: 50,
+        }}
+      >
         <BasicPagination
           setPagination={setPagination}
           pagination={pagination}
@@ -664,5 +584,3 @@ export default function SearchHotel() {
     </>
   );
 }
-
-// "start": "react-scripts start",

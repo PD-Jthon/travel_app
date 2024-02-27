@@ -117,7 +117,8 @@ const ReservationForm = ({
     const checkOut = ConvertDate(checkInOutValue[1]["$d"]);
 
     handleSetRawReservation({
-      user: user["pk"],
+      user: JSON.parse(user).pk,
+      // user: user["pk"],
       hotel: pk,
       num_people: numberOfPeople,
       check_in: checkIn,
@@ -136,8 +137,8 @@ const ReservationForm = ({
         "X-CSRFToken": GetCookieValue("csrftoken"),
       },
       data: {
-        // user: JSON.parse(user).pk,
-        user: user["pk"],
+        user: JSON.parse(user).pk,
+        // user: user["pk"],
         hotel: pk,
         num_people: numberOfPeople,
         check_in: checkIn,

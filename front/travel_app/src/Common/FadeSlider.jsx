@@ -1,16 +1,10 @@
-// import React, { useRef, useState } from "react";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./style.css";
-// import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import { Pagination, Navigation, Autoplay, EffectFade } from "swiper";
-// SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 export default function FadeSlider() {
   const swiper = {
@@ -20,13 +14,6 @@ export default function FadeSlider() {
     autoplay: {
       disableOnInteraction: false,
     },
-    // pagination: {
-    //   el: ".swiper-pagination",
-    // },
-    // navigation: {
-    //   nextEl: ".swiper-button-next",
-    //   prevEl: ".swiper-button-prev",
-    // },
   };
 
   const swiperArrow = {
@@ -50,7 +37,6 @@ export default function FadeSlider() {
         spaceBetween={30}
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
         loop={true}
-        // onSlideChange={() => console.log("slide change")}
       >
         <SwiperSlide className="fade-slider">
           <img src="../../hotel_photos/house01.jpg" />

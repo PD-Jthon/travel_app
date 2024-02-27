@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Input as BaseInput } from "@mui/base/Input";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
@@ -6,7 +6,6 @@ import Stack from "@mui/material/Stack";
 import { Grid } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import SearchHotel from "../SearchHotel/SearchHotel";
 import { SearchAtom } from "../Atom/SearchResultAtom";
 import { useRecoilState } from "recoil";
 
@@ -109,7 +108,6 @@ export default function UnstyledInputIntroduction() {
   const [inputValue, setInputValue] = useState();
 
   const [search, setSearch] = useRecoilState(SearchAtom);
-  // console.log(search);
 
   const handleSubmit = (value) => {
     console.log(value);

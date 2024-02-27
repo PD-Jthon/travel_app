@@ -15,40 +15,27 @@ import { useUserState } from "../Atom/user";
 import Table from "@mui/material/Table";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import CheckInOut from "../Calendar/CheckInOut";
 import dayjs from "dayjs";
-import { constSelector } from "recoil";
-import { Checklist, LocalConvenienceStoreOutlined } from "@mui/icons-material";
-import GetUserInfo from "../AuthTemplates/GetUserInfo";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
 import { useAlert } from "../Alert/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 import CancelModal from "./CancelModal";
 
 const columns = [
   { id: "created_at", label: "作成日" },
-  // { id: "username", label: "代表者名" },
   { id: "check-inout", label: "チェックイン / アウト" },
   {
     id: "hotel-name",
     label: "宿名",
   },
-  // {
-  //   id: "num_people",
-  //   label: "人数",
-  // },
 ];
 
 const style = {
@@ -94,8 +81,6 @@ function ChildModal({
   const handleCheckInOutChange = (value) => {
     setCheckInOutValue(value);
   };
-
-  // console.log(checkInOutValue);
 
   useEffect(() => {
     const checkIn = dayjs(ConvertDate(modalElem.check_in));
@@ -189,7 +174,6 @@ function ChildModal({
 
   return (
     <React.Fragment>
-      {/* <Button>Open Child Modal</Button> */}
       <Modal
         open={childModal}
         onClose={() => handleChildModal()}
@@ -205,21 +189,7 @@ function ChildModal({
                 name="check_inout"
                 handleCheckInOutChange={handleCheckInOutChange}
                 checkInOutValue={checkInOutValue}
-                // checkInOutValue={checkInOutValue}
-                // {...register("check_inout", {
-                //   required: {
-                //     value: true,
-                //     message: "必須の入力項目です。",
-                //   },
-                // })}
               />
-              {/* {errors.check_inout && (
-              <span
-                style={{ fontSize: "12px", color: "red", marginLeft: "12px" }}
-              >
-                {errors.check_inout.message}
-              </span>
-            )} */}
             </Grid>
             <Grid xs={12}>
               <Grid item marginBottom={1}>
@@ -236,7 +206,6 @@ function ChildModal({
                   InputProps={{
                     inputProps: { min: 1, max: capacity },
                   }}
-                  // value={numberOfPeople}
                   onChange={(e) => handleChangeNum(e)}
                 />
               </Grid>
@@ -271,20 +240,6 @@ export default function Reservation() {
   const [cancelModal, setCancelModal] = useState(false);
   const [id, setID] = useState(0);
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  // function createData(name, code, population, size) {
-  //   const density = population / size;
-  //   return { name, code, population, size, density };
-  // }
-
   // 子モーダルの開閉
   const handleChildModal = () => {
     setChildModal((prev) => !prev);
@@ -299,7 +254,6 @@ export default function Reservation() {
     console.log("call useEffect");
     if (!user) {
       console.log("pass if condition");
-      // GetUserInfo();
 
       // ここでユーザーの情報を紹介してsetUserでuserにデータを登録している
       axios({
@@ -352,22 +306,6 @@ export default function Reservation() {
       };
       getReservation();
     }
-    // console.log("id_check");
-    // console.log(id);
-    // const getReservation = () => {
-    //   console.log("user", user);
-    //   let id = JSON.parse(user).pk;
-    //   axios({
-    //     url: `http://localhost:8000/top/get-reservation/${id}`,
-    //     method: "GET",
-    //   })
-    //     .then((res) => {
-    //       setReservation(res.data);
-    //       console.log(res.data);
-    //     })
-    //     .catch((error) => console.log(error));
-    // };
-    // getReservation();
   }, []);
 
   const MyTableRow = styled(TableRow)({
@@ -409,31 +347,23 @@ export default function Reservation() {
           <TableBody>
             {reservation.map((elem) => (
               <>
-                {/* <Link style={{textDecoration: 'none'}}> */}
                 <MyTableRow hover onClick={(e) => handleReservation(elem, e)}>
                   <TableCell>
                     {elem.updated_at ? elem.updated_at : elem.created_at}
                   </TableCell>
-                  {/* <TableCell>{elem.user_name}</TableCell> */}
                   <TableCell>
                     {elem.check_in} ~ {elem.check_out}
                   </TableCell>
-                  {/* <Link to="/top/detail" state={{state: elem.hotel}}> */}
                   <TableCell>{elem.hotel_name}</TableCell>
-                  {/* </Link> */}
-                  {/* <TableCell>{elem.num_people}人</TableCell> */}
                 </MyTableRow>
-                {/* </Link> */}
               </>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* modal */}
       {open && (
         <div>
-          {/* <Button onClick={handleOpen}>Open modal</Button> */}
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -507,7 +437,6 @@ export default function Reservation() {
                     <Button
                       variant="contained"
                       onClick={() => handleChildModal()}
-                      // onClick={() => handleSaveReservation()}
                     >
                       変更する
                     </Button>

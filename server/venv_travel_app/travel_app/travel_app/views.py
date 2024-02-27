@@ -43,7 +43,6 @@ class DetailView(APIView):
   def get(self, request, pk, *args, **kwargs):
     hotel = Hotel.objects.filter(id=pk)
     serializer = HotelSerializer(hotel, many=True)
-    # print(serializer.data)
     return Response(serializer.data)
 
 
@@ -73,7 +72,6 @@ class SearchHotelView(APIView):
 
 # 検索ボックスで検索した際に動作
 class SearchView(APIView):
-  # pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
   pagination_class = SearchPagePagination
   paginator = pagination_class()
 
@@ -156,7 +154,6 @@ class GetReservationView(APIView):
     data = Reservation.objects.filter(user=id)
     serializer = ReservationSerializer(data, many=True)
     serializer_data = serializer.data
-    # print(serializer_data)
     return Response(serializer_data)
 
 

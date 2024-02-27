@@ -59,7 +59,7 @@ export default function PlanCarousel() {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
           <Grid item xs={12} lg={3} md={4} sx={gridItemStyle}>
-            <CardActionArea href="#">
+            <CardActionArea href="">
               <Paper elevation={3} style={section}>
                 <AccountCircleOutlinedIcon style={{ marginRight: 5 }} />
                 会員限定プラン
@@ -67,7 +67,7 @@ export default function PlanCarousel() {
             </CardActionArea>
           </Grid>
           <Grid item xs={12} lg={3} md={4} sx={gridItemStyle}>
-            <CardActionArea href="#">
+            <CardActionArea href="">
               <Paper elevation={3} style={section}>
                 <AccessAlarmsOutlinedIcon style={{ marginRight: 5 }} />
                 タイムセール
@@ -75,7 +75,7 @@ export default function PlanCarousel() {
             </CardActionArea>
           </Grid>
           <Grid item xs={12} lg={3} md={4} sx={gridItemStyle}>
-            <CardActionArea href="#">
+            <CardActionArea href="">
               <Paper elevation={3} style={section}>
                 <CalendarTodayIcon />
                 <ScheduleIcon style={{ paddin: 2, marginRight: 5 }} />
@@ -84,7 +84,7 @@ export default function PlanCarousel() {
             </CardActionArea>
           </Grid>
           <Grid item xs={12} lg={3} md={4} sx={gridItemStyle}>
-            <CardActionArea href="#">
+            <CardActionArea href="">
               <Paper elevation={3} style={section}>
                 <EventAvailableIcon style={{ marginRight: 5 }} />
                 早期割

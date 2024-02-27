@@ -1,54 +1,34 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
-import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Copyright } from "@mui/icons-material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import SuccessModal from "./SuccessModal";
-import GetCookieValue from "../GetCookie.jsx/GetCookie";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // historyオブジェクトを取得
-
   const [ModalOpen, setModalOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
 
   const {
     getValues,
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -81,7 +61,6 @@ export default function SignIn() {
       },
     })
       .then(() => {
-        // reloadPage();
         setMessage("会員登録に成功しました。");
         setIsSuccess(true);
         setModalOpen(true);
