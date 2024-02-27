@@ -7,6 +7,7 @@ import { ButtonGroup } from "@mui/material";
 import axios from "axios";
 import { useAlert } from "../Alert/Alert";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -58,12 +59,15 @@ export default function CancelModal({
           severity: "success",
           message: "予約をキャンセルしました。",
         });
+        document.getElementById(modalElem.id).remove();
         getReservation();
         handleCancelModal();
         setOpen((prev) => !prev);
       })
       .catch((error) => console.log(error));
   };
+  const removeItem = document.getElementById(modalElem.id);
+  console.log(removeItem);
 
   return (
     <React.Fragment>

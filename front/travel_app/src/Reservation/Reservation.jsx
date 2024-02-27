@@ -347,7 +347,11 @@ export default function Reservation() {
           <TableBody>
             {reservation.map((elem) => (
               <>
-                <MyTableRow hover onClick={(e) => handleReservation(elem, e)}>
+                <MyTableRow
+                  id={elem.id}
+                  hover
+                  onClick={(e) => handleReservation(elem, e)}
+                >
                   <TableCell>
                     {elem.updated_at ? elem.updated_at : elem.created_at}
                   </TableCell>
