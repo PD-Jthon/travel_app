@@ -90,11 +90,16 @@ function DrawerAppBar(props) {
               disablePadding
               sx={{ justifyContent: "center" }}
             >
-              <ListItemButton>
-                <ListItemText
-                  style={{ justifyContent: "center", display: "flex" }}
-                  primary="予約一覧"
-                />
+              <ListItemButton style={{ justifyContent: 'center', display: 'flex' }}>
+                <Link
+                  to={`reservation`}
+                  style={{ textDecoration: "none", color: '#000' }}
+                >
+                  <ListItemText
+                    style={{ justifyContent: "center", display: "flex" }}
+                    primary="予約一覧"
+                  />
+                </Link>
               </ListItemButton>
             </ListItem>
           </>
@@ -168,7 +173,6 @@ function DrawerAppBar(props) {
       })
       .catch((error) => console.log(error));
   };
-
 
   return (
     <Box
