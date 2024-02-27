@@ -27,6 +27,8 @@ export default function CancelModal({
   modalElem,
   setOpen,
   setReservation,
+  deleteId,
+  setDeleteId,
 }) {
   console.log(modalElem);
   const { alert, hideAlert, setAlert } = useAlert();
@@ -49,6 +51,8 @@ export default function CancelModal({
 
   const hanldeDeleteReservation = () => {
     const id = modalElem.id;
+    console.log('id', id);
+    setDeleteId(id);
     axios({
       // url: `http://localhost:8000/top/delete-reservation/${id}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/delete-reservation/${id}`,
@@ -59,15 +63,13 @@ export default function CancelModal({
           severity: "success",
           message: "予約をキャンセルしました。",
         });
-        document.getElementById(modalElem.id).remove();
+
         getReservation();
         handleCancelModal();
         setOpen((prev) => !prev);
       })
       .catch((error) => console.log(error));
   };
-  const removeItem = document.getElementById(modalElem.id);
-  console.log(removeItem);
 
   return (
     <React.Fragment>

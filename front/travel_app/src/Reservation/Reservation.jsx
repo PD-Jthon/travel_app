@@ -124,6 +124,10 @@ function ChildModal({
     axios({
       // url: `http://localhost:8000/top/change-reservation/${id}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/change-reservation/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": GetCookieValue("csrftoken"),
+      },
       method: "POST",
       data: {
         num_people: num,
@@ -239,6 +243,7 @@ export default function Reservation() {
   const [childModal, setChildModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [id, setID] = useState(0);
+  const [deleteId, setDeleteId] = useState(0);
 
   // 子モーダルの開閉
   const handleChildModal = () => {
@@ -330,6 +335,8 @@ export default function Reservation() {
     handleOpen();
   };
 
+  console.log("deleteId", deleteId);
+
   return (
     <Container sx={{ marginTop: 13 }} maxWidth="md">
       <h1>予約一覧</h1>
@@ -344,24 +351,27 @@ export default function Reservation() {
               ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {reservation.map((elem) => (
-              <>
-                <MyTableRow
-                  id={elem.id}
-                  hover
-                  onClick={(e) => handleReservation(elem, e)}
-                >
-                  <TableCell>
-                    {elem.updated_at ? elem.updated_at : elem.created_at}
-                  </TableCell>
-                  <TableCell>
-                    {elem.check_in} ~ {elem.check_out}
-                  </TableCell>
-                  <TableCell>{elem.hotel_name}</TableCell>
-                </MyTableRow>
-              </>
-            ))}
+            {reservation.map((elem) =>
+              deleteId !== elem.id ? (
+                <>
+                  <MyTableRow
+                    id={elem.id}
+                    hover
+                    onClick={(e) => handleReservation(elem, e)}
+                  >
+                    <TableCell>
+                      {elem.updated_at ? elem.updated_at : elem.created_at}
+                    </TableCell>
+                    <TableCell>
+                      {elem.check_in} ~ {elem.check_out}
+                    </TableCell>
+                    <TableCell>{elem.hotel_name}</TableCell>
+                  </MyTableRow>
+                </>
+              ) : null
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -460,6 +470,8 @@ export default function Reservation() {
                   modalElem={modalElem}
                   setOpen={setOpen}
                   setReservation={setReservation}
+                  deleteId={deleteId}
+                  setDeleteId={setDeleteId}
                 />
               </Box>
             </Fade>
