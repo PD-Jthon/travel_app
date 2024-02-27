@@ -532,12 +532,12 @@ export default function SearchHotel() {
                           <Typography component="div" variant="h6">
                             {elem.name}
                           </Typography>
-                          <hr style={{ opacity: "0.15" }} />
+                          {/* <hr style={{ opacity: "0.15" }} /> */}
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
-                            sx={{ fontSize: "13px", marginBottom: 1 }}
+                            sx={{ fontSize: "13px", marginBottom: 0.5 }}
                           >
                             {elem.description}
                           </Typography>
@@ -545,7 +545,7 @@ export default function SearchHotel() {
                             variant="subtitle1"
                             color="text.secondary"
                             component="div"
-                            sx={{ fontSize: "13px", marginBottom: 1 }}
+                            sx={{ fontSize: "13px" }}
                           >
                             {elem.address}
                           </Typography>

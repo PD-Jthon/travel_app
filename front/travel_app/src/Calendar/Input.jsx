@@ -156,6 +156,7 @@ export default function UnstyledInputIntroduction() {
         </Grid>
         <Grid item>
           <Submit
+            style={{ textDecoration: 'none' }}
             inputValue={inputValue}
             onClick={() => handleSubmit(inputValue)}
           />
