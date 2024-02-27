@@ -521,7 +521,7 @@ export default function SearchHotel() {
                     style={{ textDecoration: "none" }}
                     to={`/top/detail/${elem.id}`}
                   >
-                    <MyCard elevation={5}>
+                    <MyCard elevation={5} style={{ border: '1px solid rgba(0, 0, 0, 0.3)' }}>
                       <MyCardMedia
                         component="img"
                         image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
