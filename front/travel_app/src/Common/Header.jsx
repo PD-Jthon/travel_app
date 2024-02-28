@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -16,30 +15,21 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import "./style.css";
 import { Container } from "@mui/system";
-import { Grid, makeStyles } from "@mui/material";
-import { Link, Navigate } from "react-router-dom";
+import { Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { LoggedInState } from "../Atom/atom";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { CircleNotifications } from "@mui/icons-material";
 import { useAlert } from "../Alert/Alert";
-// import { useAlert } from "../Alert/Alert";
 
 const drawerWidth = 240;
-// const navItems = ["会員登録", "ログイン", "SAMURAI Travelとは"];
 
 function DrawerAppBar(props) {
-  // console.log(props, authenticated);
-  console.log(props);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggedIn, setLoggedIn] = useRecoilState(LoggedInState);
-  const navigate = useNavigate();
   const { alert, hideAlert, setAlert } = useAlert();
-  const { authenticated } = props;
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -47,11 +37,6 @@ function DrawerAppBar(props) {
 
   const svg_icons = {
     transform: "scale(1.5)",
-  };
-
-  const shouldShowInDrawer = (item) => {
-    // 会員登録とログインだけをハンバーガーメニューにしまわない条件を設定
-    return item !== "会員登録" && item !== "ログイン";
   };
 
   useEffect(() => {
@@ -90,10 +75,12 @@ function DrawerAppBar(props) {
               disablePadding
               sx={{ justifyContent: "center" }}
             >
-              <ListItemButton style={{ justifyContent: 'center', display: 'flex' }}>
+              <ListItemButton
+                style={{ justifyContent: "center", display: "flex" }}
+              >
                 <Link
                   to={`reservation`}
-                  style={{ textDecoration: "none", color: '#000' }}
+                  style={{ textDecoration: "none", color: "#000" }}
                 >
                   <ListItemText
                     style={{ justifyContent: "center", display: "flex" }}
@@ -129,16 +116,6 @@ function DrawerAppBar(props) {
           </>
         )}
 
-        {/* <ListItem key="Login" disablePadding>
-          <ListItemButton sx={{ justifyContent: "center" }}>
-            <Link
-              to={`login/`}
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItemText primary="ログイン" />
-            </Link>
-          </ListItemButton>
-        </ListItem> */}
         <ListItem key="" disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
             <ListItemText primary="SAMURAI Travelとは" />
@@ -151,15 +128,8 @@ function DrawerAppBar(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  // const useStyles = makeStyles(() => ({
-  //   "@media ()"
-  // }));
-
-  // const { alertMessage, showAlert } = useAlert();
-
   const handleLogOut = () => {
     axios({
-      // url: "http://localhost:8000/dj-rest-auth/logout",
       url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/logout`,
       method: "GET",
       withCredentials: true,
@@ -189,7 +159,6 @@ function DrawerAppBar(props) {
         component="nav"
         sx={{
           background: "linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.2))",
-          // backgroundColor: 'rgba(0, 0, 0, 0.4)',
         }}
       >
         <Container>

@@ -39,7 +39,6 @@ const HoverLink = styled.a`
 `;
 
 const LoginBeforeReservation = () => (
-  // todo: loginしている場合はチェックイン・チェックアウトに表示が切り替わる
   <Paper elevation={3} sx={{ padding: 2 }}>
     <Grid container>
       <Grid xs={12} marginBottom={1}>
@@ -59,23 +58,18 @@ const LoginBeforeReservation = () => (
 );
 
 const ReservationForm = ({
-  handleDatePicker,
   pk,
   numPeople,
   setReservation,
-  submit,
   ModalToggler,
   handleSetRawReservation,
 }) => {
   const [numberOfPeople, setNumberOfPeople] = useState("");
   const [checkInOutValue, setCheckInOutValue] = useState(null);
   const { user, setUser } = useUserState();
-  const [date, setDate] = useState();
   const {
-    getValues,
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -91,14 +85,9 @@ const ReservationForm = ({
   };
 
   // 予約確認モーダル開閉用のステート
-  // todo: モーダルにpropsで渡して開閉させるためのハンドラーを作成する必要がある
-
-  console.log(numPeople);
   const maxNum = Number(numPeople.replace("人", ""));
-  console.log(maxNum);
 
   const handleTextFieldChange = (e) => {
-    console.log(e.target.value);
     setNumberOfPeople(e.target.value);
   };
 
@@ -107,29 +96,18 @@ const ReservationForm = ({
   };
 
   const handleReservation = ({ props }) => {
-    // numberOfPeople と checkInOutValue を使って何かしらの処理を行う
-    console.log("Number of People:", numberOfPeople);
-    console.log("Check In/Out Value:", checkInOutValue);
-    console.log(checkInOutValue[0], checkInOutValue[1]);
-    console.log("user", user);
-
     const checkIn = ConvertDate(checkInOutValue[0]["$d"]);
     const checkOut = ConvertDate(checkInOutValue[1]["$d"]);
 
     handleSetRawReservation({
       user: JSON.parse(user).pk,
-      // user: user["pk"],
       hotel: pk,
       num_people: numberOfPeople,
       check_in: checkIn,
       check_out: checkOut,
     });
 
-    const jstOffset = 9 * 60 * 60 * 1000; // 日本時間のオフセット（9時間）
-    console.log("checkInOutValue", checkInOutValue);
-
     axios({
-      // url: "http://localhost:8000/top/confirm-reservation/",
       url: `${process.env.REACT_APP_BASE_URL}/top/confirm-reservation/`,
       method: "POST",
       headers: {
@@ -138,7 +116,6 @@ const ReservationForm = ({
       },
       data: {
         user: JSON.parse(user).pk,
-        // user: user["pk"],
         hotel: pk,
         num_people: numberOfPeople,
         check_in: checkIn,
@@ -150,8 +127,6 @@ const ReservationForm = ({
         ModalToggler(true);
       })
       .catch((error) => console.log(error));
-
-    // todo: modalで入力値を捕捉してユーザーがokを押した場合にDBにデータを登録するようにする
   };
 
   return (
@@ -231,18 +206,11 @@ export default function Detail() {
     setRawReservation(data);
   };
 
-  console.log(reservation);
-
-  const handleDatePicker = (props) => {
-    console.log(props);
-  };
-
   const pk = useParams()["pk"];
 
   useEffect(() => {
     const getHotelDetail = () => {
       axios({
-        // url: `http://localhost:8000/top/detail/${pk}`,
         url: `${process.env.REACT_APP_BASE_URL}/top/detail/${pk}`,
         method: "GET",
       })
@@ -291,7 +259,6 @@ export default function Detail() {
 
   return (
     <>
-      {/* <Header2 /> */}
       {detail.map((elem) => (
         <>
           <Container
@@ -321,7 +288,6 @@ export default function Detail() {
                   <CardMedia
                     component="img"
                     height="140"
-                    // image={`http://localhost:8000/${elem.photo}`}
                     image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
                     alt="green iguana"
                     style={{

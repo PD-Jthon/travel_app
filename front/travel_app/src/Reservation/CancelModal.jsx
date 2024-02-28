@@ -7,7 +7,6 @@ import { ButtonGroup } from "@mui/material";
 import axios from "axios";
 import { useAlert } from "../Alert/Alert";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
-import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -27,7 +26,6 @@ export default function CancelModal({
   modalElem,
   setOpen,
   setReservation,
-  deleteId,
   setDeleteId,
 }) {
   console.log(modalElem);
@@ -35,26 +33,21 @@ export default function CancelModal({
 
   const getReservation = () => {
     const data = JSON.parse(GetCookieValue("user_info"));
-    console.log(data);
     const id = data["pk"];
     axios({
-      // url: `http://localhost:8000/top/get-reservation/${id}`,
       url: `${process.env.REACT_APP_BASE_URL}/get-reservation/${id}`,
       method: "GET",
     })
       .then((res) => {
         setReservation(res.data);
-        console.log(res.data);
       })
       .catch((error) => console.log(error));
   };
 
   const hanldeDeleteReservation = () => {
     const id = modalElem.id;
-    console.log('id', id);
     setDeleteId(id);
     axios({
-      // url: `http://localhost:8000/top/delete-reservation/${id}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/delete-reservation/${id}`,
       method: "GET",
     })
@@ -73,7 +66,6 @@ export default function CancelModal({
 
   return (
     <React.Fragment>
-      {/* <Button>Open Child Modal</Button> */}
       <Modal
         open={cancelModal}
         onClose={() => handleCancelModal()}

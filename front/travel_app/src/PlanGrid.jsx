@@ -1,21 +1,10 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import "./style.css";
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea, Container, Grid, Link } from "@mui/material";
-import { Pagination, Navigation } from "swiper";
+import { CardActionArea, Container, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import { useSwiper } from "swiper/react";
-
-// icon
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -25,9 +14,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 export default function PlanCarousel() {
 
   const section = {
-    // minHeight: "100px",
     padding: 40,
-    // paddingTop: 5,
     backgroundColor: "rgb(247, 247, 247)",
     display: "flex",
     justifyContent: "center",

@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
+import { Link, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -42,7 +41,6 @@ const MyCard = styled(Card)`
 `;
 
 const MyCardMedia = styled(CardMedia)`
-
   @media screen and (max-width: 600px) {
     width: 100%;
     height: 50%;
@@ -131,7 +129,6 @@ export default function SearchHotel() {
   const [numOfQuery, setNumOfQuery] = useState(); // クエリの数を表示するために使用するステート
   const [priceValue, setPriceValue] = useState();
   const [rawPrice, setRawPrice] = useState();
-  const [pagination, setPagination] = useState();
 
   // 検索結果があるかどうかを確認するためにsessionに検索結果を保持している
   const session = JSON.parse(sessionStorage.getItem("searchResult"));
@@ -139,22 +136,14 @@ export default function SearchHotel() {
   useEffect(() => {
     if (search && !session) {
       axios({
-        // url: `http://localhost:8000/top/search-word/${search}`,
         url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${search}`,
         method: "GET",
       })
         .then((res) => {
-          setQuery(res.data.results);
-          setPagination(res.data.page_status);
+          setQuery(res.data);
+          setNumOfQuery(res.data.length);
           sessionStorage.setItem("searchWord", JSON.stringify(search));
-          sessionStorage.setItem(
-            "searchResult",
-            JSON.stringify(res.data.results)
-          );
-          sessionStorage.setItem(
-            "pagination",
-            JSON.stringify(res.data.page_status)
-          );
+          sessionStorage.setItem("searchResult", JSON.stringify(res.data));
         })
         .catch((error) => console.log(error));
     }
@@ -165,70 +154,50 @@ export default function SearchHotel() {
   useEffect(() => {
     const searchItem = JSON.parse(sessionStorage.getItem("searchResult"));
     let searchWord = sessionStorage.getItem("searchWord");
-    const sessionPagination = JSON.parse(sessionStorage.getItem("pagination"));
-    console.log("searchItem", searchItem);
     if (searchItem) {
       setQuery(searchItem);
-      setPagination(sessionPagination);
+      setNumOfQuery(searchItem.length)
       setWord(searchWord);
     }
   }, []);
 
-  // todo: 詳細画面に映った後に検索画面に戻ってきても検索結果がリセットされないようにする
   // { state }トップページの検索ボタン押下時にここに検索ボックスの文字列が格納される
   useEffect(() => {
     if (state && !session) {
       const temp = state.state;
       setWord(state.state);
       axios({
-        // url: `http://localhost:8000/top/search-word/${temp}`,
         url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${temp}`,
         method: "GET",
       })
         .then((res) => {
-          setQuery(res.data.results);
-          setPagination(res.data.page_status);
-          console.log("page", res.data.page_status);
-          setNumOfQuery(res.data.page_status.count);
-          sessionStorage.setItem(
-            "searchResult",
-            JSON.stringify(res.data.results)
-          );
+          setQuery(res.data);
+          setNumOfQuery(res.data.length);
+          sessionStorage.setItem("searchResult", JSON.stringify(res.data));
           sessionStorage.setItem("searchWord", JSON.stringify(search));
-          sessionStorage.setItem(
-            "pagination",
-            JSON.stringify(res.data.page_status)
-          );
         })
         .catch((error) => console.log(error));
     }
     return;
-  }, [state]);
+  }, []);
 
   // 検索画面の検索ボックスのサブミット時の処理(enter押下時、submitボタン押下時どちらにも対応)
   const handleSubmit = () => {
     let value = inputRef.current.value;
-    console.log("value", value);
     if (value === "") {
       value = "undefined";
     }
     sessionStorage.setItem("searchWord", JSON.stringify(value));
     axios({
-      // url: `http://localhost:8000/top/search-word/${value}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/search-word/${value}`,
       method: "GET",
     })
       .then((res) => {
-        setQuery(res.data.results);
-        setPagination(res.data.page_status);
-        setNumOfQuery(res.data.page_status.count);
+        setQuery(res.data);
+        setNumOfQuery(res.data.length);
         sessionStorage.setItem(
           "searchResult",
-          JSON.stringify(res.data.results)
-        );
-        sessionStorage.setItem(
-          "pagination",
-          JSON.stringify(res.data.page_status)
+          JSON.stringify(res.data)
         );
       })
       .catch((error) => console.log(error));
@@ -240,7 +209,6 @@ export default function SearchHotel() {
   const endComposition = () => setComposition(false);
 
   const onKeydown = (key) => {
-    console.log(key);
     switch (key) {
       case "Enter":
         if (composing) break;
@@ -250,7 +218,6 @@ export default function SearchHotel() {
   };
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     const value = event.target.value;
     const prefecture = areaOptions[value];
     document.cookie = `pref=${value}`;
@@ -260,8 +227,6 @@ export default function SearchHotel() {
   // 予算から探すの部分に対応している
   // selectの番号をセットしている(setPriceValueステートにセットしている)
   const handlePriceChange = (e) => {
-    console.log("handlePriceChange");
-    console.log(e.target.value);
     const price = priceOption[e.target.value];
     setRawPrice(price);
     setPriceValue(e.target.value);
@@ -270,44 +235,26 @@ export default function SearchHotel() {
 
   const handlePriceSearch = () => {
     axios({
-      // url: `http://localhost:8000/top/search-price/${rawPrice}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/search-price/${rawPrice}`,
       method: "GET",
     })
       .then((res) => {
-        setQuery(res.data.results);
-        setNumOfQuery(res.data.results.length);
-        sessionStorage.setItem(
-          "searchResult",
-          JSON.stringify(res.data.results)
-        );
-        setPagination(res.data.page_status);
-        sessionStorage.setItem(
-          "pagination",
-          JSON.stringify(res.data.page_status)
-        );
+        setQuery(res.data);
+        setNumOfQuery(res.data.length);
+        sessionStorage.setItem("searchResult", JSON.stringify(res.data));
       })
       .catch((error) => console.log(error));
   };
 
   const handlePrefSearch = () => {
     axios({
-      // url: `http://localhost:8000/top/search/${pref}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/search/${pref}`,
       method: "GET",
     })
       .then((res) => {
-        setQuery(res.data.results);
-        setNumOfQuery(res.data.page_status.count);
-        sessionStorage.setItem(
-          "searchResult",
-          JSON.stringify(res.data.results)
-        );
-        setPagination(res.data.page_status);
-        sessionStorage.setItem(
-          "pagination",
-          JSON.stringify(res.data.page_status)
-        );
+        setQuery(res.data);
+        setNumOfQuery(res.data.length);
+        sessionStorage.setItem("searchResult", JSON.stringify(res.data));
       })
       .catch((error) => console.log(error));
   };
@@ -315,7 +262,6 @@ export default function SearchHotel() {
   useEffect(() => {
     const cookiePref = GetCookieValue("pref");
     if (cookiePref) {
-      console.log(cookiePref);
       setPrefValue(pref);
     }
   }, []);
@@ -336,7 +282,6 @@ export default function SearchHotel() {
                   onCompositionStart={startComposition}
                   onCompositionEnd={endComposition}
                   onKeyPress={(key) => {
-                    console.log(key.key);
                     if (key.key === "Enter") {
                       onKeydown(key.key);
                     }
@@ -521,7 +466,10 @@ export default function SearchHotel() {
                     style={{ textDecoration: "none" }}
                     to={`/top/detail/${elem.id}`}
                   >
-                    <MyCard elevation={5} style={{ border: '1px solid rgba(0, 0, 0, 0.3)' }}>
+                    <MyCard
+                      elevation={5}
+                      style={{ border: "1px solid rgba(0, 0, 0, 0.3)" }}
+                    >
                       <MyCardMedia
                         component="img"
                         image={`${process.env.REACT_APP_BASE_URL}/${elem.photo}`}
@@ -532,7 +480,6 @@ export default function SearchHotel() {
                           <Typography component="div" variant="h6">
                             {elem.name}
                           </Typography>
-                          {/* <hr style={{ opacity: "0.15" }} /> */}
                           <Typography
                             variant="subtitle1"
                             color="text.secondary"
@@ -566,20 +513,6 @@ export default function SearchHotel() {
             ))}
           </Grid>
         </Grid>
-      </Container>
-
-      <Container
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 100,
-          marginBottom: 50,
-        }}
-      >
-        <BasicPagination
-          setPagination={setPagination}
-          pagination={pagination}
-        />
       </Container>
     </>
   );

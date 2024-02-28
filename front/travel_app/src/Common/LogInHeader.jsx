@@ -16,18 +16,15 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import "./style.css";
 import { Container } from "@mui/system";
-import { Grid, makeStyles } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
 
 const drawerWidth = 240;
-// const navItems = ["会員登録", "ログイン", "SAMURAI Travelとは"];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  // const [logIn, setLogIn] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -37,21 +34,8 @@ function DrawerAppBar(props) {
     transform: "scale(1.5)",
   };
 
-  const shouldShowInDrawer = (item) => {
-    // 会員登録とログインだけをハンバーガーメニューにしまわない条件を設定
-    return item !== "会員登録" && item !== "ログイン";
-  };
-
   const token = localStorage.getItem("token");
   console.log(token);
-
-  // useEffect(() => {
-  //   if(token) {
-  //     setAuthenticated(true);
-  //   } else {
-  //     setAuthenticated(false);
-  //   };
-  // }, [isAutheticated])
 
   const drawer = (
     <Box
@@ -63,17 +47,6 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {/* <ListItem key="signUp" disablePadding>
-          <ListItemButton sx={{ justifyContent: "center" }}>
-            <Link
-              to={`sign_up/`}
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItemText primary="会員登録" />
-            </Link>
-          </ListItemButton>
-        </ListItem> */}
-
         <ListItem key="Login" disablePadding sx={{ justifyContent: "center" }}>
           <ListItemButton onClick={() => handleLogOut()}>
             <ListItemText
@@ -82,7 +55,6 @@ function DrawerAppBar(props) {
             />
           </ListItemButton>
         </ListItem>
-
         <ListItem key="" disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
             <ListItemText primary="SAMURAI Travelとは" />
@@ -95,31 +67,18 @@ function DrawerAppBar(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  // const useStyles = makeStyles(() => ({
-  //   "@media ()"
-  // }));
-
   const handleLogOut = () => {
     const token = localStorage.getItem("token");
     axios({
-      // url: "http://localhost:8000/dj-rest-auth/logout",
       url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/logout`,
       method: "GET",
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   'Authorization': `Bearer ${token}`,
-      // },
     })
       .then((res) => {
         // todo: alertメッセージ
         localStorage.removeItem("token");
       })
       .catch((error) => console.log(error));
-    // localStorage.removeItem("token");
   };
-
-  // console.log(localStorage);
-
   return (
     <Box
       sx={{
@@ -130,13 +89,11 @@ function DrawerAppBar(props) {
         right: 0,
       }}
     >
-      {/* <FadeSlider /> */}
       <CssBaseline />
       <AppBar
         component="nav"
         sx={{
           background: "linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.2))",
-          // backgroundColor: 'rgba(0, 0, 0, 0.4)',
         }}
       >
         <Container>
@@ -164,24 +121,6 @@ function DrawerAppBar(props) {
                   SAMURAI Travel
                 </Link>
               </Typography>
-              {/* <Button
-                sx={{
-                  color: "#fff",
-                  fontSize: 15,
-                  textShadow: "3px 4px 3px rgb(61 70 70)",
-                }}
-              >
-                会員登録
-              </Button>
-              <Button
-                sx={{
-                  color: "#fff",
-                  fontSize: 15,
-                  textShadow: "3px 4px 3px rgb(61 70 70)",
-                }}
-              >
-                ログイン
-              </Button> */}
               <IconButton
                 style={svg_icons}
                 color="inherit"
@@ -211,22 +150,6 @@ function DrawerAppBar(props) {
             </Typography>
 
             <Box sx={{ display: { xs: "none", md: "block" } }}>
-              {/* <Button
-                key=""
-                sx={{
-                  color: "#fff",
-                  fontSize: 15,
-                  textShadow: "3px 4px 3px rgb(61 70 70)",
-                }}
-              >
-                <Link
-                  to={`sign_up/`}
-                  style={{ color: "#fff", textDecoration: "none" }}
-                >
-                  会員登録
-                </Link>
-              </Button> */}
-
               <Button
                 key=""
                 sx={{
@@ -271,7 +194,6 @@ function DrawerAppBar(props) {
               boxSizing: "border-box",
               width: drawerWidth,
             },
-            // zIndex: 1000,
           }}
         >
           {drawer}

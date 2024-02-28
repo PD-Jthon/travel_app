@@ -1,49 +1,25 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import Table from "@mui/material/Table";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
-import TableHead from "@mui/material/TableHead";
 import { ButtonGroup, TableBody, TableContainer } from "@mui/material";
-import { Container } from "@mui/system";
 import axios from "axios";
 import { alertState } from "../Alert/Alert";
-import SuccessModal from "../AuthTemplates/SuccessModal";
 import { useRecoilState } from "recoil";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 export default function BasicModal({
   ModalToggler,
   reservation,
   setSubmit,
-  handleSetRawReservation,
   rawReservation,
 }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [alert, setAlert] = useRecoilState(alertState);
 
   const handleSaveReservation = () => {
-    console.log(rawReservation);
     axios({
-      // url: "http://localhost:8000/top/reservation/",
       url: `${process.env.REACT_APP_BASE_URL}/top/reservation/`,
       method: "POST",
       headers: {
@@ -53,7 +29,7 @@ export default function BasicModal({
       data: rawReservation,
     })
       .then((res) => {
-        console.log('51', res.data);
+        console.log("51", res.data);
         ModalToggler(false);
         setAlert({
           severity: "success",
@@ -69,7 +45,7 @@ export default function BasicModal({
         <div
           id="content"
           onClick={(e) => e.stopPropagation()}
-          style={{ border: "2px solid rgb(0 0 0)", maxWidth: 600 }}
+          style={{ border: "2px solid rgb(0 0 0)", width: 400 }}
         >
           <div style={{ display: "flex", justifyContent: "center" }}>
             <h3>予約確認</h3>

@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Box, CardActionArea, Container } from "@mui/material";
-import { useEffect } from "react";
-import axios from "axios";
+import { Container } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
@@ -16,21 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import styled from "styled-components";
 
 export default function PopularHotels() {
-  const [hotel, setHotel] = useState([]);
-
-  // useEffect(() => {
-  //   const getPopHotels = () => {
-  //     axios({
-  //       url: "http://localhost:8000/top",
-  //       method: "GET",
-  //     })
-  //       .then((res) => setHotel(res.data))
-  //       .catch((error) => console.log(error));
-  //   };
-  //   getPopHotels();
-  // }, []);
-  // console.log(hotel);
-
   const regionsData = [
     { region: "北海道", prefectures: ["北海道"] },
     {
@@ -131,7 +110,6 @@ export default function PopularHotels() {
             <TableBody>
               {regionsData.map((elem) => (
                 <TableRow
-                  // key=""
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
                   }}
@@ -146,11 +124,9 @@ export default function PopularHotels() {
                   </TableCell>
                   <TableCell style={Cell} align="start">
                     {elem.prefectures.map((prefecture) => (
-                      // <HoverLink href={`top/search/${prefecture}`}>{prefecture}</HoverLink>
                       <Link
-                        // to={`/top/search/${prefecture}`}
                         to={`/top/search-word/`}
-                        state={{state: `${prefecture}`}}
+                        state={{ state: `${prefecture}` }}
                         style={{ textDecoration: "none" }}
                       >
                         <HoverLink>{prefecture}</HoverLink>

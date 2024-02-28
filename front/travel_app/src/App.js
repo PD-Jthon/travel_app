@@ -2,36 +2,28 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Top from "./Top/Top";
 import {
-  BrowserRouter,
-  BrowserRouter as Router,
   HashRouter,
   Navigate,
   Outlet,
   Route,
   Routes,
-  unstable_HistoryRouter,
   useLocation,
 } from "react-router-dom";
 import Detail from "./Detail/Detail";
-import Header from "./Common/Header";
 import Footer from "./Common/Footer";
 import { Container } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Parent from "./Modal/Parent";
 import SearchHotel from "./SearchHotel/SearchHotel";
 import SignUp from "./AuthTemplates/SignUp";
-import SignUpSuccess from "./AuthTemplates/SignUpSuccess";
 import Login from "./AuthTemplates/Login";
 import useUserAuth from "./Atom/useAuth";
 import Hoge from "./OnlyLoggedIn/Hoge";
-import LogInHeader from "./Common/LogInHeader";
 import { LoggedInState } from "./Atom/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import DrawerAppBar from "./Common/Header";
 import GlobalAlert from "./Alert/AlertComponent";
 import { SearchRoutes } from "./SearchHotel/SearchRoutes";
 import Reservation from "./Reservation/Reservation";
-import { useUserInfo } from "./Atom/userInfo";
 import axios from "axios";
 import GetCookieValue from "./GetCookie.jsx/GetCookie";
 import { DetailRoutes } from "./Detail/DetailRoutes";
@@ -47,17 +39,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// function getCookieValue(key) {
-//   const cookies = document.cookie.split(";");
-//   for (let cookie of cookies) {
-//     var cookiesArray = cookie.split("=");
-//     if (cookiesArray[0].trim() == key.trim()) {
-//       return cookiesArray[1]; // (key[0],value[1])
-//     }
-//   }
-//   return "";
-// }
-
 export default function App() {
   const theme = createTheme({
     palette: {
@@ -68,8 +49,6 @@ export default function App() {
   const { userStatus, fetchUser } = useUserAuth();
   const [isLoggedIn, setLoggedIn] = useRecoilState(LoggedInState);
   const [authChecked, setAuthChecked] = useState(false);
-  const checkLoggedIn = useRecoilValue(LoggedInState);
-  const token = localStorage.getItem("token");
   const { user, setUser } = useUserState();
 
   useEffect(() => {
@@ -92,7 +71,6 @@ export default function App() {
   useEffect(() => {
     if (!isLoggedIn && !authChecked) {
       axios({
-        // url: "http://localhost:8000/dj-rest-auth/logout/",
         url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/logout`,
         method: "GET",
       })
@@ -108,17 +86,14 @@ export default function App() {
     console.log(GetCookieValue("password"));
 
     axios({
-      // url: "http://localhost:8000/accounts/check-login-status/",
       url: `${process.env.REACT_APP_BASE_URL}/top/check-login-status`,
       method: "GET",
       withCredentials: true, // Move this here
     })
       .then((res) => {
         if (res.data) {
-          // Adjust this condition based on your API response
           setLoggedIn(true);
           const userStatus = GetCookieValue("user_info");
-          console.log("userStatus", userStatus);
           setUser(userStatus);
         }
       })
@@ -126,10 +101,6 @@ export default function App() {
         console.log(error);
       });
   }, [isLoggedIn]);
-
-  // Move the dependency array here
-
-  // console.log(authChecked, userStatus(), token);
 
   return (
     <>
@@ -140,7 +111,6 @@ export default function App() {
         <GlobalAlert />
 
         <div style={{ minHeight: "100vh" }}>
-          {/* <Router> */}
           <ScrollToTop />
           <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -149,7 +119,6 @@ export default function App() {
               <Route path="top/detail/:pk" element={<Detail />} />
               <Route path="top/search/:pref" element={<SearchHotel />} />
               <Route path="top/search-word" element={<SearchHotel />} />
-              {/* <Route path="/top/search-word/:word" element={<SearchHotel />} /> */}
               {SearchRoutes.map((route) => (
                 <Route
                   key={route.path}
@@ -168,7 +137,6 @@ export default function App() {
               ))}
               <Route path="top/reservation" element={<Reservation />} />
               <Route path="sign_up/" element={<SignUp />} />
-              {/* <Route exact path="/signup_success" element={<SignUpSuccess />} /> */}
               <Route path="/login" element={<Login />} />
               <Route element={<RouteAuthGuard />}>
                 <Route path="/hoge" element={<Hoge />} />
@@ -176,9 +144,7 @@ export default function App() {
               </Route>
             </Routes>
           </ThemeProvider>
-          {/* </Router> */}
         </div>
-        {/* <Parent /> */}
         <Footer style={{ position: "fixed" }} />
       </HashRouter>
     </>

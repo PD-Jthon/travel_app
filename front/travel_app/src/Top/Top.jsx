@@ -1,20 +1,14 @@
-import Button from "@mui/material/Button";
-
-import { Box, Container, Stack } from "@mui/material";
-
-import { styled } from "@mui/material/styles";
+import { Container } from "@mui/material";
 import FadeSlider from "../Common/FadeSlider";
 import Header from "../Common/Header";
 import PopularHotels from "../PopularHotels";
 import SubCarousel from "./SubCarousel";
 import PlanGrid from "../PlanGrid";
-import { MarginTwoTone } from "@mui/icons-material";
 import Calendar from "../Calendar/Calendar";
 import Prefecture from "../TopListDisplay/Prefecture";
 import AlertTitle from "@mui/material/AlertTitle";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function Top() {
   const container = {
@@ -26,11 +20,6 @@ export default function Top() {
   const planContainer = {
     paddingTop: 60,
     marginBottom: 80,
-  };
-
-  const calendarContainer = {
-    maxWidth: "800px",
-    marginTop: 60,
   };
 
   const location = useLocation();
@@ -45,14 +34,16 @@ export default function Top() {
     }
   }, []);
 
-  // console.log(sessionStorage.getItem("searchResult", "searchWord"));
+  useEffect(() => {
+    sessionStorage.clear();
+  })
 
   return (
     <>
       <AlertTitle />
       <FadeSlider />
       <Container>
-        <Calendar />   {/* カレンダーでなくインプット */}
+        <Calendar />
       </Container>
 
       <Container>

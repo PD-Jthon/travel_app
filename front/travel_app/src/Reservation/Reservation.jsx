@@ -3,7 +3,6 @@ import Container from "@mui/material/Container";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import {
-  Alert,
   ButtonGroup,
   TableBody,
   TableContainer,
@@ -65,18 +64,11 @@ function ChildModal({
   setReservation,
   setOpen,
 }) {
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const [checkInOutValue, setCheckInOutValue] = useState("");
   const [capacity, setCapacity] = useState();
   const [num, setNum] = useState();
   const { user, setUser } = useUserState();
   const { alert, setAlert } = useAlert();
-  const navigate = useNavigate();
 
   const handleCheckInOutChange = (value) => {
     setCheckInOutValue(value);
@@ -114,15 +106,11 @@ function ChildModal({
     return convertedDate;
   };
 
-  console.log(user);
-
   const handleSubmit = () => {
-    console.log(checkInOutValue[0]["$d"]);
     const checkIn = dateFormatter(checkInOutValue[0]["$d"]);
     const checkOut = dateFormatter(checkInOutValue[1]["$d"]);
     const id = modalElem.id;
     axios({
-      // url: `http://localhost:8000/top/change-reservation/${id}`,
       url: `${process.env.REACT_APP_BASE_URL}/top/change-reservation/${id}`,
       headers: {
         "Content-Type": "application/json",
@@ -136,7 +124,6 @@ function ChildModal({
       },
     })
       .then((res) => {
-        console.log(res.data);
         setAlert({
           severity: "success",
           message: "予約を更新しました。",
@@ -146,7 +133,6 @@ function ChildModal({
 
         const id = JSON.parse(user).pk;
         axios({
-          // url: `http://localhost:8000/top/get-reservation/${id}`,
           url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
           method: "GET",
         })
@@ -167,13 +153,8 @@ function ChildModal({
   };
 
   const handleChangeNum = (e) => {
-    console.log(e.target.value);
     const tempNum = Number(e.target.value);
     setNum(tempNum);
-  };
-
-  const handleChangeDate = (e, date) => {
-    console.log("handleChangeDate", e, date);
   };
 
   return (
@@ -233,9 +214,6 @@ function ChildModal({
 export default function Reservation() {
   const { user, setUser } = useUserState();
   const [reservation, setReservation] = useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -256,56 +234,31 @@ export default function Reservation() {
 
   useEffect(() => {
     let myId = 0;
-    console.log("call useEffect");
     if (!user) {
-      console.log("pass if condition");
-
       // ここでユーザーの情報を紹介してsetUserでuserにデータを登録している
       axios({
-        // url: "http://localhost:8000/dj-rest-auth/user/",
         url: `${process.env.REACT_APP_BASE_URL}/dj-rest-auth/user/`,
         method: "GET",
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res.data);
           setUser(res.data);
           const data = JSON.stringify(res.data);
           document.cookie = `user_info=${data}`;
           myId = JSON.parse(data).pk;
-          console.log("myId");
-          console.log(myId);
           setID(myId);
-          console.log("id", id);
         })
         .catch((error) => console.log(error));
-      const getReservation = () => {
-        console.log("user", user);
-        let id = JSON.parse(user).pk;
-        axios({
-          // url: `http://localhost:8000/top/get-reservation/${id}`,
-          url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
-          method: "GET",
-        })
-          .then((res) => {
-            setReservation(res.data);
-            console.log(res.data);
-          })
-          .catch((error) => console.log(error));
-      };
     } else {
       const getReservation = () => {
         const data = JSON.parse(GetCookieValue("user_info"));
-        console.log(data);
         const id = data["pk"];
         axios({
-          // url: `http://localhost:8000/top/get-reservation/${id}`,
           url: `${process.env.REACT_APP_BASE_URL}/top/get-reservation/${id}`,
           method: "GET",
         })
           .then((res) => {
             setReservation(res.data);
-            console.log(res.data);
           })
           .catch((error) => console.log(error));
       };
@@ -320,9 +273,7 @@ export default function Reservation() {
     },
   });
 
-  const handleReservation = (elem, e) => {
-    console.log("handleReservation");
-    console.log(elem);
+  const handleReservation = (elem) => {
     setModalElem({
       id: elem.id,
       created_at: elem.created_at,
@@ -334,8 +285,6 @@ export default function Reservation() {
     });
     handleOpen();
   };
-
-  console.log("deleteId", deleteId);
 
   return (
     <Container sx={{ marginTop: 13 }} maxWidth="md">

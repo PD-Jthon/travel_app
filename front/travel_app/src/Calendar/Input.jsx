@@ -110,7 +110,6 @@ export default function UnstyledInputIntroduction() {
   const [search, setSearch] = useRecoilState(SearchAtom);
 
   const handleSubmit = (value) => {
-    console.log(value);
     setSearch(value);
     axios({
       // url: `http://localhost:8000/top/search-word/${value}`,

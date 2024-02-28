@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function GetCookieValue(key) {
   const cookies = document.cookie.split(";");
   for (let cookie of cookies) {

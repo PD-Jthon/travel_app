@@ -24,7 +24,6 @@ export default function PopularHotels() {
     };
     getPopHotels();
   }, []);
-  // console.log(hotel);
 
   return (
     <>
@@ -71,10 +70,8 @@ export default function PopularHotels() {
                       />
                       <CardContent sx={{ height: "50%" }}>
                         <Typography gutterBottom variant="h6" component="div">
-                          {/* <Grid container alignItems="center" direction="row"> */}
                           <Rating score={elem.score} />
                           {elem.name}
-                          {/* </Grid> */}
                         </Typography>
                         <Typography variant="body3" color="text.secondary">
                           {elem.description}
