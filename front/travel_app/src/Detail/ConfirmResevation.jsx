@@ -9,6 +9,7 @@ import axios from "axios";
 import { alertState } from "../Alert/Alert";
 import { useRecoilState } from "recoil";
 import GetCookieValue from "../GetCookie.jsx/GetCookie";
+import '../Modal/style.css';
 
 export default function BasicModal({
   ModalToggler,
